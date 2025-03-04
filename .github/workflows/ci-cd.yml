@@ -3,34 +3,40 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - main # Cambia esto si tu rama principal tiene otro nombre
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      # Paso 1: Obtener el código del repositorio
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # Paso 2: Configurar Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 18 # Asegúrate de usar la versión correcta de Node.js
 
+      # Paso 3: Configurar variables de entorno
       - name: Set environment variables
         run: |
           echo "VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}" >> $GITHUB_ENV
           echo "VITE_SUPABASE_ANON_KEY=${{ secrets.VITE_SUPABASE_ANON_KEY }}" >> $GITHUB_ENV
 
+      # Paso 4: Instalar dependencias
       - name: Install dependencies
         run: npm install
 
+      # Paso 5: Construir el proyecto
       - name: Build project
-        run: npm run build
+        run: npm run build # Asegúrate de que este comando genere la carpeta `dist`
 
+      # Paso 6: Desplegar en GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          github_token: ${{ secrets.GITHUB_TOKEN }} # Token de GitHub para autenticación
+          publish_dir: ./dist # Carpeta que contiene los archivos construidos
