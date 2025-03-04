@@ -46,7 +46,6 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuthContext(); // Obtén el estado de autenticación
 
   if (!user) {
-    // Si el usuario no está autenticado, redirige a /login
     return <Navigate to="/login" replace />;
   }
 
