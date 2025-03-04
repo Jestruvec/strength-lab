@@ -21,7 +21,7 @@ export default function App() {
 
           {/* Rutas privadas (con layout) */}
           <Route
-            path="/" // Cambia la ruta base de las rutas privadas
+            path="/app" // Cambia la ruta base de las rutas privadas
             element={
               <PrivateRoute>
                 <MainLayout />
