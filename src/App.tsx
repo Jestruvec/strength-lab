@@ -1,35 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { Home, Login, NotFound, Settings, Train, Profile } from "./pages";
+import { AuthProvider, useAuthContext } from "@/context";
+import { MainLayout } from "@/components";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Rutas públicas (sin layout) */}
+          <Route path="/login" element={<Login />} />
+
+          {/* Rutas privadas (con layout) */}
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <MainLayout />
+              </PrivateRoute>
+            }
+          >
+            <Route index element={<Home />} />{" "}
+            {/* Ruta raíz dentro del layout */}
+            <Route path="home" element={<Home />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="train" element={<Train />} />
+          </Route>
+
+          {/* Ruta para páginas no encontradas */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
+  );
 }
 
-export default App
+// Componente para proteger rutas privadas
+const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user } = useAuthContext(); // Obtén el estado de autenticación
+
+  if (!user) {
+    // Si el usuario no está autenticado, redirige a /login
+    return <Navigate to="/login" replace />;
+  }
+
+  // Si el usuario está autenticado, renderiza el layout y sus hijos
+  return <>{children}</>;
+};
