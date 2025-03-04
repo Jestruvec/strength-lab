@@ -13,12 +13,15 @@ export default function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Rutas públicas (sin layout) */}
+          {/* Redirigir la ruta raíz "/" a "/login" */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
+
+          {/* Ruta de login (pública) */}
           <Route path="/login" element={<Login />} />
 
           {/* Rutas privadas (con layout) */}
           <Route
-            path="/"
+            path="/app" // Cambia la ruta base de las rutas privadas
             element={
               <PrivateRoute>
                 <MainLayout />
