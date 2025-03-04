@@ -11,7 +11,7 @@ import { MainLayout } from "@/components";
 export default function App() {
   return (
     <AuthProvider>
-      <Router>
+      <Router basename="/strength-lab">
         <Routes>
           {/* Redirigir la ruta raíz "/" a "/login" */}
           <Route path="/" element={<Navigate to="/login" replace />} />
