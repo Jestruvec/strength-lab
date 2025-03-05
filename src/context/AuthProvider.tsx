@@ -48,6 +48,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const { data: response, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          emailRedirectTo: "https://jestruvec.github.io/strength-lab/login", // URL de redirección
+        },
       });
 
       if (error) throw new Error(error.message);
