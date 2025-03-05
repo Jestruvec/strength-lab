@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setError(null);
 
     try {
-      const { data: response, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -55,8 +55,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (error) throw new Error(error.message);
 
-      setUser(response.user);
-      storageService.setItem("user", response.user);
+      alert(
+        "Confirme su cuenta dando click en el enlace enviado al correo electronico registrado"
+      );
     } catch (err) {
       setError(err.message);
     } finally {

@@ -3,8 +3,8 @@ import { useAuthContext } from "@/context";
 import { FormField, ErrorMessage } from "@/components";
 
 export const LoginForm = () => {
-  const [email, setEmail] = useState("jhonnyestruve@gmail.com");
-  const [password, setPassword] = useState("123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { error, loading, login } = useAuthContext();
 
   const handleSubmit = (event: React.FormEvent) => {
