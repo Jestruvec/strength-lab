@@ -8,6 +8,7 @@ import {
   FaHome,
   FaUser,
   FaCog,
+  FaBook,
 } from "react-icons/fa";
 
 // Barra superior con botón para mostrar/ocultar la barra lateral
@@ -34,7 +35,13 @@ const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
 };
 
 // Barra lateral con estado para mostrar/ocultar en móviles
-const Sidebar = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
+const Sidebar = ({
+  isSidebarOpen,
+  toggleSidebar,
+}: {
+  isSidebarOpen: boolean;
+  toggleSidebar: () => void;
+}) => {
   return (
     <aside
       className={`bg-gray-700 z-10 text-white w-full lg:w-64 fixed bottom-0 lg:top-16 lg:h-full overflow-y-auto transform transition-transform duration-200 ease-in-out ${
@@ -49,6 +56,7 @@ const Sidebar = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
             <Link
               to="/"
               className="hover:text-gray-300 flex items-center gap-2"
+              onClick={toggleSidebar}
             >
               <FaHome />
               Inicio
@@ -56,8 +64,19 @@ const Sidebar = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
           </li>
           <li className="mb-2 p-2 hover:bg-gray-600 cursor-pointer ">
             <Link
+              to="/routines"
+              className="hover:text-gray-300 flex gap-2 items-center"
+              onClick={toggleSidebar}
+            >
+              <FaBook />
+              Rutinas
+            </Link>
+          </li>
+          <li className="mb-2 p-2 hover:bg-gray-600 cursor-pointer ">
+            <Link
               to="/train"
               className="hover:text-gray-300 flex gap-2 items-center"
+              onClick={toggleSidebar}
             >
               <FaDumbbell />
               Entrenar
@@ -67,6 +86,7 @@ const Sidebar = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
             <Link
               to="/profile"
               className="hover:text-gray-300 flex items-center gap-2"
+              onClick={toggleSidebar}
             >
               <FaUser />
               Perfil
@@ -76,6 +96,7 @@ const Sidebar = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
             <Link
               to="/settings"
               className="hover:text-gray-300 flex items-center gap-2"
+              onClick={toggleSidebar}
             >
               <FaCog />
               Configuracion
@@ -98,9 +119,9 @@ export const MainLayout = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <Header toggleSidebar={toggleSidebar} />
-      <Sidebar isSidebarOpen={isSidebarOpen} />
+      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <main
-        className={`fixed lg:h-[54.5rem] overflow-auto p-2 top-16 w-full transform transition-transform duration-200 ease-in-out 
+        className={`fixed lg:h-[54.5rem] overflow-auto p-4 top-16 w-full transform transition-transform duration-200 ease-in-out 
         ${
           isSidebarOpen
             ? "lg:translate-x-64 h-[37rem]"

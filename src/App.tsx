@@ -4,7 +4,15 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { Home, Login, NotFound, Settings, Train, Profile } from "./pages";
+import {
+  Home,
+  Login,
+  NotFound,
+  Settings,
+  Train,
+  Profile,
+  Routines,
+} from "./pages";
 import { AuthProvider, useAuthContext } from "@/context";
 import { MainLayout } from "@/components";
 
@@ -34,6 +42,7 @@ export default function App() {
             <Route path="settings" element={<Settings />} />
             <Route path="profile" element={<Profile />} />
             <Route path="train" element={<Train />} />
+            <Route path="routines" element={<Routines />} />
           </Route>
 
           {/* Ruta para páginas no encontradas */}

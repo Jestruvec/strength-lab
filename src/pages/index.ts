@@ -5,5 +5,6 @@ import { Login } from "./Login/Login";
 import { Profile } from "./Profile/Profile";
 import { Settings } from "./Settings/Settings";
 import { Train } from "./Train/Train";
+import { Routines } from "./Routines/Routines";
 
-export { Home, Profile, Settings, Train, About, NotFound, Login };
+export { Home, Profile, Settings, Train, About, NotFound, Login, Routines };

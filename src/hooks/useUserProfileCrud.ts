@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { supabase } from "@/utils";
 import { UserProfile } from "@/types";
 
 export const useUserProfileCrud = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchProfile = async (userId: string) => {
+  const fetchProfile = useCallback(async (userId: string) => {
+    setLoading(true);
+    setError(null);
+
     try {
-      setLoading(true);
       const { data, error } = await supabase
         .from("user_profile")
         .select("*")
@@ -23,6 +25,29 @@ export const useUserProfileCrud = () => {
       setProfile(data);
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const postProfile = async (userProfileData: UserProfile) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const { data: profile, error } = await supabase
+        .from("user_profile")
+        .insert([userProfileData])
+        .select()
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      setProfile(profile);
+    } catch (error) {
+      setError(error.mesage);
     } finally {
       setLoading(false);
     }
@@ -79,6 +104,7 @@ export const useUserProfileCrud = () => {
     fetchProfile,
     upsertProfile,
     deleteProfile,
+    postProfile,
   };
 };
 

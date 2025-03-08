@@ -21,7 +21,7 @@ export const Train = () => {
     }
 
     if (error) {
-      <>error</>;
+      return <>error</>;
     }
 
     return (
@@ -33,6 +33,13 @@ export const Train = () => {
             setValue={setDay}
             label="Dia de entrenamiento"
             required
+            options={[
+              { value: 1, label: "Día 1" },
+              { value: 2, label: "Día 2" },
+              { value: 3, label: "Día 3" },
+              { value: 4, label: "Día 4" },
+              { value: 5, label: "Día 5" },
+            ]}
           />
         </div>
 

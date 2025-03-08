@@ -1,35 +1,40 @@
 import { useState, useCallback } from "react";
-import { UserRoutine } from "@/types";
+import { Routine } from "@/types";
 import { supabase } from "@/utils";
+import { useAuthContext } from "@/context";
 
-export const useUserRoutinesCrud = () => {
+export const useRoutinesCrud = () => {
+  const { user } = useAuthContext();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [userRoutine, setUserRoutine] = useState<UserRoutine | null>(null);
-  const [userRoutines, setUserRoutines] = useState<UserRoutine[]>([]);
+  const [routines, setRoutines] = useState<Routine[]>([]);
+  const [routine, setRoutine] = useState<Routine>({
+    id: "",
+    created_at: "",
+    name: "",
+    user_id: user.id,
+  });
 
-  const fetchUserRoutines = useCallback(async () => {
+  const fetchRoutines = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const { data: routines, error } = await supabase.from("user_routines")
-        .select(`
+      const { data: routines, error } = await supabase.from("routines").select(`
             *,
-            routines (
-              routine_exercises (
+            routine_exercises (
                 *,
                 exercises(
-                  *
+                    *
                 )
-              )
             )`);
 
       if (error) {
         throw error;
       }
 
-      setUserRoutines(routines);
+      setRoutines(routines);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -37,7 +42,7 @@ export const useUserRoutinesCrud = () => {
     }
   }, []);
 
-  const fetchUserRoutineById = async (id: string) => {
+  const fetchRoutineById = async (id: string) => {
     setLoading(true);
     setError(null);
 
@@ -52,7 +57,7 @@ export const useUserRoutinesCrud = () => {
         throw error;
       }
 
-      setUserRoutine(routine);
+      setRoutine(routine);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -60,21 +65,23 @@ export const useUserRoutinesCrud = () => {
     }
   };
 
-  const PostUserRoutine = async (userRoutineData: UserRoutine) => {
+  const PostRoutine = async (routineData: Routine) => {
     setLoading(true);
     setError(null);
 
     try {
-      const { data: userRoutine, error } = await supabase
+      setRoutine((value) => ({ ...value, user_id: user.id }));
+
+      const { data: routine, error } = await supabase
         .from("routines")
-        .insert([userRoutineData])
+        .insert([routineData])
         .select();
 
       if (error) {
         throw error;
       }
 
-      setUserRoutine(userRoutine[0]);
+      setRoutine(routine[0]);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -82,14 +89,14 @@ export const useUserRoutinesCrud = () => {
     }
   };
 
-  const PutUserRoutine = async (id: string, userRoutineData: UserRoutine) => {
+  const PutRoutine = async (id: string, routineData: Routine) => {
     setLoading(true);
     setError(null);
 
     try {
-      const { data: userRoutine, error } = await supabase
+      const { data: routine, error } = await supabase
         .from("routines")
-        .update(userRoutineData)
+        .update(routineData)
         .eq("id", id)
         .select();
 
@@ -97,7 +104,7 @@ export const useUserRoutinesCrud = () => {
         throw error;
       }
 
-      setUserRoutines(userRoutine[0]);
+      setRoutine(routine[0]);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -105,7 +112,7 @@ export const useUserRoutinesCrud = () => {
     }
   };
 
-  const DeleteUserRoutine = async (id: string) => {
+  const DeleteRoutine = async (id: string) => {
     setLoading(true);
     setError(null);
 
@@ -125,12 +132,12 @@ export const useUserRoutinesCrud = () => {
   return {
     loading,
     error,
-    userRoutine,
-    userRoutines,
-    fetchUserRoutines,
-    fetchUserRoutineById,
-    PostUserRoutine,
-    PutUserRoutine,
-    DeleteUserRoutine,
+    routine,
+    routines,
+    fetchRoutines,
+    fetchRoutineById,
+    PostRoutine,
+    PutRoutine,
+    DeleteRoutine,
   };
 };

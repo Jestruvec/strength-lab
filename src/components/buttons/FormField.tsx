@@ -2,9 +2,9 @@ type FormFieldProps = {
   id: string;
   type: string;
   placeholder: string;
-  value: string;
-  setValue: (value: string) => void;
-  label: string;
+  value: any;
+  setValue: (value: any) => void;
+  label?: string;
   required?: boolean;
 };
 
@@ -19,9 +19,11 @@ export const FormField = ({
 }: FormFieldProps) => {
   return (
     <div className="flex flex-col">
-      <label htmlFor={id} className="text-sm font-medium">
-        {label}
-      </label>
+      {label && (
+        <label htmlFor={id} className="text-sm font-medium">
+          {label}
+        </label>
+      )}
       <input
         id={id}
         type={type}

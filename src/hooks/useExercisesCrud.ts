@@ -1,35 +1,30 @@
 import { useState, useCallback } from "react";
-import { UserRoutine } from "@/types";
+import { Exercise } from "@/types";
 import { supabase } from "@/utils";
 
-export const useUserRoutinesCrud = () => {
+export const useExercisesCrud = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [userRoutine, setUserRoutine] = useState<UserRoutine | null>(null);
-  const [userRoutines, setUserRoutines] = useState<UserRoutine[]>([]);
+  const [exercise, setExercise] = useState<Exercise | null>(null);
+  const [exercises, setExercises] = useState<Exercise[]>([]);
 
-  const fetchUserRoutines = useCallback(async () => {
+  const fetchExercises = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const { data: routines, error } = await supabase.from("user_routines")
+      const { data: routines, error } = await supabase.from("exercises")
         .select(`
-            *,
-            routines (
-              routine_exercises (
-                *,
-                exercises(
-                  *
-                )
-              )
-            )`);
+          *,
+          exercise_main_muscles (*),
+          exercise_secondary_muscles (*)
+          `);
 
       if (error) {
         throw error;
       }
 
-      setUserRoutines(routines);
+      setExercises(routines);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -37,13 +32,13 @@ export const useUserRoutinesCrud = () => {
     }
   }, []);
 
-  const fetchUserRoutineById = async (id: string) => {
+  const fetchExerciseById = async (id: string) => {
     setLoading(true);
     setError(null);
 
     try {
       const { data: routine, error } = await supabase
-        .from("routines")
+        .from("exercises")
         .select("*")
         .eq("id", id)
         .single();
@@ -52,7 +47,7 @@ export const useUserRoutinesCrud = () => {
         throw error;
       }
 
-      setUserRoutine(routine);
+      setExercise(routine);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -60,21 +55,21 @@ export const useUserRoutinesCrud = () => {
     }
   };
 
-  const PostUserRoutine = async (userRoutineData: UserRoutine) => {
+  const PostExercise = async (exerciseData: Exercise) => {
     setLoading(true);
     setError(null);
 
     try {
-      const { data: userRoutine, error } = await supabase
-        .from("routines")
-        .insert([userRoutineData])
+      const { data: exercise, error } = await supabase
+        .from("exercises")
+        .insert([exerciseData])
         .select();
 
       if (error) {
         throw error;
       }
 
-      setUserRoutine(userRoutine[0]);
+      setExercise(exercise[0]);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -82,14 +77,14 @@ export const useUserRoutinesCrud = () => {
     }
   };
 
-  const PutUserRoutine = async (id: string, userRoutineData: UserRoutine) => {
+  const PutExercise = async (id: string, exerciseData: Exercise) => {
     setLoading(true);
     setError(null);
 
     try {
-      const { data: userRoutine, error } = await supabase
-        .from("routines")
-        .update(userRoutineData)
+      const { data: exercise, error } = await supabase
+        .from("exercises")
+        .update(exerciseData)
         .eq("id", id)
         .select();
 
@@ -97,7 +92,7 @@ export const useUserRoutinesCrud = () => {
         throw error;
       }
 
-      setUserRoutines(userRoutine[0]);
+      setExercises(exercise[0]);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -105,12 +100,12 @@ export const useUserRoutinesCrud = () => {
     }
   };
 
-  const DeleteUserRoutine = async (id: string) => {
+  const DeleteExercise = async (id: string) => {
     setLoading(true);
     setError(null);
 
     try {
-      const { error } = await supabase.from("routines").delete().eq("id", id);
+      const { error } = await supabase.from("exercises").delete().eq("id", id);
 
       if (error) {
         throw error;
@@ -125,12 +120,13 @@ export const useUserRoutinesCrud = () => {
   return {
     loading,
     error,
-    userRoutine,
-    userRoutines,
-    fetchUserRoutines,
-    fetchUserRoutineById,
-    PostUserRoutine,
-    PutUserRoutine,
-    DeleteUserRoutine,
+    exercise,
+    exercises,
+    setExercises,
+    fetchExercises,
+    fetchExerciseById,
+    PostExercise,
+    PutExercise,
+    DeleteExercise,
   };
 };
