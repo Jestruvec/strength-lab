@@ -20,7 +20,6 @@ export const RegisterForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-      {/* Email */}
       <FormField
         id="email"
         type="email"
@@ -30,7 +29,6 @@ export const RegisterForm = () => {
         label="Email"
       />
 
-      {/* Password */}
       <FormField
         id="password"
         type="password"
@@ -40,10 +38,8 @@ export const RegisterForm = () => {
         label="Password"
       />
 
-      {/* Error Message */}
       {error && <ErrorMessage message={error} />}
 
-      {/* Login Button */}
       <button
         type="submit"
         className="p-2  text-white rounded-md mt-7 bg-gray-700 cursor-pointer shadow-sm  hover:opacity-90"

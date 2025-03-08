@@ -21,15 +21,11 @@ export default function App() {
     <AuthProvider>
       <Router basename="/strength-lab">
         <Routes>
-          {/* Redirigir la ruta raíz "/" a "/login" */}
           <Route path="/" element={<Navigate to="/login" replace />} />
-
-          {/* Ruta de login (pública) */}
           <Route path="/login" element={<Login />} />
 
-          {/* Rutas privadas (con layout) */}
           <Route
-            path="/" // Cambia la ruta base de las rutas privadas
+            path="/"
             element={
               <PrivateRoute>
                 <MainLayout />
@@ -37,7 +33,6 @@ export default function App() {
             }
           >
             <Route index element={<Home />} />{" "}
-            {/* Ruta raíz dentro del layout */}
             <Route path="home" element={<Home />} />
             <Route path="settings" element={<Settings />} />
             <Route path="profile" element={<Profile />} />
@@ -45,7 +40,6 @@ export default function App() {
             <Route path="routines" element={<Routines />} />
           </Route>
 
-          {/* Ruta para páginas no encontradas */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
@@ -53,15 +47,12 @@ export default function App() {
   );
 }
 
-// Componente para proteger rutas privadas
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useAuthContext(); // Obtén el estado de autenticación
+  const { user } = useAuthContext();
 
   if (!user) {
-    // Si el usuario no está autenticado, redirige a /login
     return <Navigate to="/login" replace />;
   }
 
-  // Si el usuario está autenticado, renderiza el layout y sus hijos
   return <>{children}</>;
 };

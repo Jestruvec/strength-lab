@@ -1,17 +1,21 @@
 import { LoginForm } from "./forms/LoginForm";
 import { RegisterForm } from "./forms/RegisterForm";
-import { FormField } from "./buttons/FormField";
-import { ErrorMessage } from "./errors/ErrorMessage";
-import { SocialLoginButtons } from "./buttons/SocialLoginButtons";
-import { Navbar } from "./navbar/Navbar";
-import { Profile } from "./cards/Profile";
-import { MainLayout } from "./layouts/MainLayout";
-import { FormSelect } from "./selects/FormSelect";
-import { ProfileForm } from "./forms/ProfileForm";
+
+import { FormField } from "./inputs/FormField";
+import { FormSelect } from "./inputs/FormSelect";
+
 import { CustomButton } from "./buttons/CustomButton";
-import { RoutinesTable } from "./tables/RoutinesTable";
-import { RoutineForm } from "./forms/RoutineForm";
+import { SocialLoginButtons } from "./buttons/SocialLoginButtons";
+
+import { MainLayout } from "./layouts/MainLayout";
+
+import { ErrorMessage } from "./errors/ErrorMessage";
 import { EmptySection } from "./EmptySection/EmptySection";
+
+import { RoutinesTable } from "./tables/RoutinesTable";
+
+import { ProfileForm } from "./forms/ProfileForm";
+import { RoutineForm } from "./forms/RoutineForm";
 
 export {
   EmptySection,
@@ -20,9 +24,7 @@ export {
   CustomButton,
   FormSelect,
   MainLayout,
-  Profile,
   LoginForm,
-  Navbar,
   RegisterForm,
   FormField,
   ErrorMessage,

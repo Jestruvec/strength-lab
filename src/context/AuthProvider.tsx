@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         email,
         password,
         options: {
-          emailRedirectTo: "https://jestruvec.github.io/strength-lab/login", // URL de redirección
+          emailRedirectTo: "https://jestruvec.github.io/strength-lab/login",
         },
       });
 

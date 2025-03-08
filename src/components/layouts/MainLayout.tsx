@@ -11,7 +11,6 @@ import {
   FaBook,
 } from "react-icons/fa";
 
-// Barra superior con botón para mostrar/ocultar la barra lateral
 const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   const navigate = useNavigate();
   const { logout } = useAuthContext();
@@ -34,7 +33,6 @@ const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   );
 };
 
-// Barra lateral con estado para mostrar/ocultar en móviles
 const Sidebar = ({
   isSidebarOpen,
   toggleSidebar,
@@ -108,7 +106,6 @@ const Sidebar = ({
   );
 };
 
-// Layout principal
 export const MainLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -129,7 +126,7 @@ export const MainLayout = () => {
         }
         `}
       >
-        <Outlet /> {/* Aquí se renderizará el contenido dinámico */}
+        <Outlet />
       </main>
     </div>
   );
