@@ -14,6 +14,7 @@ export const useRoutinesCrud = () => {
     created_at: "",
     name: "",
     user_id: user.id,
+    day: 1,
   });
 
   const fetchRoutines = useCallback(async () => {

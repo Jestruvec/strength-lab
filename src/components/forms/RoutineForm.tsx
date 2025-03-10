@@ -157,6 +157,21 @@ export const RoutineForm = ({
           required
         />
 
+        <FormField
+          id="day"
+          label="Dia"
+          placeholder="Dia"
+          type="numer"
+          value={routineData.day}
+          setValue={(newValue: string) =>
+            setRoutineData((prevRoutine) => ({
+              ...prevRoutine,
+              day: Number(newValue),
+            }))
+          }
+          required
+        />
+
         <label className="text-sm font-medium">Seleccionar ejercicios</label>
 
         <div className="flex gap-1">

@@ -30,6 +30,9 @@ export const RoutinesTable = ({
             <span className="text-sm">Nombre</span>
           </th>
           <th className="p-2">
+            <span className="text-sm">Dia</span>
+          </th>
+          <th className="p-2">
             <span className="text-sm">Musculos</span>
           </th>
           <th className="p-2">
@@ -65,6 +68,7 @@ export const RoutinesTable = ({
               }}
             >
               <td className="text-center">{routine.name}</td>
+              <td className="text-center">{routine.day}</td>
               <td className="text-center">lorem</td>
               <td className="text-center">
                 {routine.routine_exercises.length}
@@ -77,7 +81,7 @@ export const RoutinesTable = ({
               </td>
               <td className="text-center">
                 {routine.routine_exercises.reduce((acc, item) => {
-                  acc += item.reps;
+                  acc += item.reps * item.sets;
                   return acc;
                 }, 0)}
               </td>

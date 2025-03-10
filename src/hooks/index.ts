@@ -1,5 +1,4 @@
 import { useUserProfileCrud } from "./useUserProfileCrud";
-import { useUserRoutinesCrud } from "./useUserRoutinesCrud";
 import { useRoutinesCrud } from "./useRoutinesCrud";
 import { useRoutineExercisesCrud } from "./useRoutineExercises";
 import { useExercisesCrud } from "./useExercisesCrud";
@@ -10,6 +9,5 @@ export {
   useExercisesCrud,
   useUserProfileCrud,
   useRoutinesCrud,
-  useUserRoutinesCrud,
   useRoutineExercisesCrud,
 };

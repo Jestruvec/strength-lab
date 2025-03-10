@@ -4,7 +4,6 @@ import { Avatar } from "./Avatar";
 import { Routine } from "./Routine";
 import { Exercise } from "./Exercise";
 import { RoutineExercise } from "./RoutineExercise";
-import { UserRoutine } from "./UserRoutine";
 import { Muscle } from "./Muscle";
 
 export type {
@@ -15,5 +14,4 @@ export type {
   AuthContextType,
   Exercise,
   RoutineExercise,
-  UserRoutine,
 };
