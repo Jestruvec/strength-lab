@@ -19,7 +19,7 @@ export const RoutineForm = ({
   const { user } = useAuthContext();
   const { muscles, fetchMuscles } = useMusclesCrud();
   const { fetchExercises, exercises } = useExercisesCrud();
-  const { routine, PostRoutine } = useRoutinesCrud();
+  const { routine, PostRoutine, PutRoutine, DeleteRoutine } = useRoutinesCrud();
   const { PostRoutineExercise } = useRoutineExercisesCrud();
 
   const postFlag = useRef(false);
@@ -27,14 +27,13 @@ export const RoutineForm = ({
   const [selectedMusclesIds, setSelectedMusclesIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const [routineExercisesData, setRoutineExercisesData] = useState<
-    RoutineExercise[]
-  >([]);
-
   const [routineData, setRoutineData] = useState<Routine>({
     name: "",
     user_id: user.id,
   } as Routine);
+  const [routineExercisesData, setRoutineExercisesData] = useState<
+    RoutineExercise[]
+  >([]);
 
   useEffect(() => {
     fetchExercises();
@@ -42,6 +41,7 @@ export const RoutineForm = ({
 
     if (routineToEdit) {
       setRoutineData(routineToEdit);
+      setRoutineExercisesData(routineToEdit.routine_exercises);
     }
   }, [fetchExercises, fetchMuscles, routineToEdit]);
 
@@ -72,10 +72,24 @@ export const RoutineForm = ({
     );
   }, [exercises, selectedMusclesIds, searchQuery]);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    PostRoutine(routineData);
+    if (routineToEdit) {
+      const exercisesToDelete = routineToEdit.routine_exercises.filter(
+        (exercise) => {
+          return !routineExercisesData.some((e) => e.id === exercise.id);
+        }
+      );
+
+      const deletePromises = exercisesToDelete.map((exercise) =>
+        DeleteRoutine(exercise.id)
+      );
+      await Promise.all(deletePromises);
+      await PutRoutine(routineToEdit.id, routineData);
+    } else {
+      await PostRoutine(routineData);
+    }
   };
 
   const toggleMuscleSelection = (muscleId: string) => {
@@ -108,7 +122,7 @@ export const RoutineForm = ({
   };
 
   const getExerciseName = (exerciseId: string) => {
-    return exercises.find((exercise) => exercise.id === exerciseId).name;
+    return exercises.find((exercise) => exercise.id === exerciseId)?.name;
   };
 
   const setRoutineExerciseData = (
@@ -151,7 +165,7 @@ export const RoutineForm = ({
               <div
                 className={`${
                   selectedMusclesIds.includes(muscle.id) && "bg-gray-300"
-                } border border-gray-400 rounded-md flex-1 overflow-hidden h-10`}
+                } border border-gray-400 cursor-pointer hover:bg-gray-200 rounded-md flex-1 overflow-hidden h-10`}
                 key={muscle.id}
                 onClick={() => toggleMuscleSelection(muscle.id)}
               >
@@ -175,7 +189,7 @@ export const RoutineForm = ({
               return (
                 <div
                   key={exercise.id}
-                  className="p-2 cursor-pointer hover:bg-gray-200"
+                  className="p-2 cursor-pointer hover:bg-gray-200 border-b border-gray-400"
                   onClick={() => addRoutineExercise(exercise)}
                 >
                   <span className="text-sm">{exercise.name}</span>

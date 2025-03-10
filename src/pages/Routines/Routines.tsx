@@ -26,7 +26,7 @@ export const Routines = () => {
       />
     );
   } else {
-    content = <RoutinesTable onRowClick={() => editRoutine} />;
+    content = <RoutinesTable onRowClick={(routine) => editRoutine(routine)} />;
   }
 
   return (

@@ -60,7 +60,9 @@ export const RoutinesTable = ({
             <tr
               key={routine.id}
               className="h-10 hover:bg-gray-200 cursor-pointer"
-              onClick={() => onRowClick(routine)}
+              onClick={() => {
+                onRowClick(routine);
+              }}
             >
               <td className="text-center">{routine.name}</td>
               <td className="text-center">lorem</td>

@@ -1,19 +1,18 @@
 import { useEffect, useState, useMemo } from "react";
-import { useUserRoutinesCrud } from "@/hooks";
+import { useRoutinesCrud } from "@/hooks";
 import { FormSelect } from "@/components";
 
 export const Train = () => {
   const [day, setDay] = useState(1);
-  const { error, loading, userRoutines, fetchUserRoutines } =
-    useUserRoutinesCrud();
+  const { error, loading, routines, fetchRoutines } = useRoutinesCrud();
 
   const filteredItems = useMemo(() => {
-    return userRoutines.filter((userRoutine) => userRoutine.day === day);
-  }, [day, userRoutines]);
+    return routines.filter((routine) => routine.day === day);
+  }, [day, routines]);
 
   useEffect(() => {
-    fetchUserRoutines();
-  }, [fetchUserRoutines]);
+    fetchRoutines();
+  }, [fetchRoutines]);
 
   {
     if (loading) {
@@ -43,13 +42,13 @@ export const Train = () => {
           />
         </div>
 
-        {filteredItems.map(({ routines, id }) => {
+        {filteredItems.map(({ routine_exercises, id, name }) => {
           return (
             <div key={id}>
-              <h1 className="text-2xl font-bold mb-3">{routines.name}</h1>
+              <h1 className="text-2xl font-bold mb-3">{name}</h1>
 
               <div className="flex flex-col gap-2">
-                {routines.routine_exercises.map(
+                {routine_exercises.map(
                   ({ exercises, sets, reps, duration, details, id }) => {
                     return (
                       <div
