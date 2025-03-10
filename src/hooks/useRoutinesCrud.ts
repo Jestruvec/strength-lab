@@ -58,7 +58,7 @@ export const useRoutinesCrud = () => {
         throw error;
       }
 
-      setRoutine(routine);
+      setRoutines([routine]);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -82,7 +82,7 @@ export const useRoutinesCrud = () => {
         throw error;
       }
 
-      setRoutine(routine[0]);
+      return routine;
     } catch (error) {
       setError(error.message);
     } finally {
@@ -105,7 +105,7 @@ export const useRoutinesCrud = () => {
         throw error;
       }
 
-      setRoutine(routine[0]);
+      return routine;
     } catch (error) {
       setError(error.message);
     } finally {
@@ -123,6 +123,8 @@ export const useRoutinesCrud = () => {
       if (error) {
         throw error;
       }
+
+      setRoutines(routines.filter((routine) => routine.id !== id));
     } catch (error) {
       setError(error.message);
     } finally {

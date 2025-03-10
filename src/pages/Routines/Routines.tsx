@@ -6,7 +6,7 @@ export const Routines = () => {
   const [isCreatingRoutine, setIsCreatingRoutine] = useState(false);
   const [routineToEdit, setRoutineToEdit] = useState<Routine | null>(null);
 
-  let content: React.ReactNode; // Tipo React.ReactNode para contenido más flexible
+  let content: React.ReactNode;
 
   const toggleIsCreatingRoutine = () => {
     setIsCreatingRoutine((oldValue) => !oldValue);
@@ -15,7 +15,6 @@ export const Routines = () => {
   const editRoutine = (routine: Routine) => {
     setRoutineToEdit(routine);
     toggleIsCreatingRoutine();
-    console.log("tuki");
   };
 
   if (isCreatingRoutine) {
@@ -30,7 +29,7 @@ export const Routines = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center">
+    <div className="flex flex-col justify-center overflow-auto">
       <div className="flex items-center gap-2 mb-2">
         <CustomButton
           label={isCreatingRoutine ? "Regresar" : "Crear rutina"}
