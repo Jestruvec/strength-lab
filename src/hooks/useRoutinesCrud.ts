@@ -1,21 +1,11 @@
 import { useState, useCallback } from "react";
 import { Routine } from "@/types";
 import { supabase } from "@/utils";
-import { useAuthContext } from "@/context";
 
 export const useRoutinesCrud = () => {
-  const { user } = useAuthContext();
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [routines, setRoutines] = useState<Routine[]>([]);
-  const [routine, setRoutine] = useState<Routine>({
-    id: "",
-    created_at: "",
-    name: "",
-    user_id: user.id,
-    day: 1,
-  });
 
   const fetchRoutines = useCallback(async () => {
     setLoading(true);
@@ -66,13 +56,11 @@ export const useRoutinesCrud = () => {
     }
   };
 
-  const PostRoutine = async (routineData: Routine) => {
+  const PostRoutine = async (routineData: Routine): Promise<Routine[]> => {
     setLoading(true);
     setError(null);
 
     try {
-      setRoutine((value) => ({ ...value, user_id: user.id }));
-
       const { data: routine, error } = await supabase
         .from("routines")
         .insert([routineData])
@@ -135,7 +123,6 @@ export const useRoutinesCrud = () => {
   return {
     loading,
     error,
-    routine,
     routines,
     fetchRoutines,
     fetchRoutineById,

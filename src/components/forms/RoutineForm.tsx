@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { CustomButton, FormField, EmptySection } from "@/components";
 import {
   useExercisesCrud,
@@ -18,19 +18,20 @@ export const RoutineForm = ({
 }) => {
   const { user } = useAuthContext();
   const { muscles, fetchMuscles } = useMusclesCrud();
-  const { fetchExercises, exercises } = useExercisesCrud();
-  const { routine, PostRoutine, PutRoutine, DeleteRoutine } = useRoutinesCrud();
-  const { PostRoutineExercise } = useRoutineExercisesCrud();
-
-  const postFlag = useRef(false);
+  const { exercises, fetchExercises } = useExercisesCrud();
+  const { PostRoutine, PutRoutine } = useRoutinesCrud();
+  const { PostRoutineExercise, PutRoutineExercise, DeleteRoutineExercise } =
+    useRoutineExercisesCrud();
 
   const [selectedMusclesIds, setSelectedMusclesIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const [routineData, setRoutineData] = useState<Routine>({
     name: "",
+    day: 1,
     user_id: user.id,
   } as Routine);
+
   const [routineExercisesData, setRoutineExercisesData] = useState<
     RoutineExercise[]
   >([]);
@@ -44,20 +45,6 @@ export const RoutineForm = ({
       setRoutineExercisesData(routineToEdit.routine_exercises);
     }
   }, [fetchExercises, fetchMuscles, routineToEdit]);
-
-  useEffect(() => {
-    if (routine.id && !postFlag.current) {
-      const updatedExercises = routineExercisesData.map((e) => ({
-        ...e,
-        routineId: routine.id,
-      }));
-
-      PostRoutineExercise(updatedExercises);
-      postFlag.current = true;
-
-      onRoutineSet();
-    }
-  }, [routine.id, routineExercisesData, PostRoutineExercise, onRoutineSet]);
 
   const filteredExercises = useMemo(() => {
     return exercises.filter(
@@ -74,22 +61,44 @@ export const RoutineForm = ({
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    const isEdition = !!routineToEdit;
 
-    if (routineToEdit) {
-      const exercisesToDelete = routineToEdit.routine_exercises.filter(
-        (exercise) => {
-          return !routineExercisesData.some((e) => e.id === exercise.id);
-        }
-      );
-
-      const deletePromises = exercisesToDelete.map((exercise) =>
-        DeleteRoutine(exercise.id)
-      );
-      await Promise.all(deletePromises);
+    if (isEdition) {
       await PutRoutine(routineToEdit.id, routineData);
+
+      const { routine_exercises: previousExercises } = routineToEdit;
+      const exercisesToDelete = previousExercises.filter((oldExercise) => {
+        return !routineExercisesData.some(
+          (newExercise) => newExercise.id === oldExercise.id
+        );
+      });
+
+      if (exercisesToDelete.length) {
+        const deletePromises = exercisesToDelete.map((e) =>
+          DeleteRoutineExercise(e.id)
+        );
+        await Promise.all(deletePromises);
+      }
+
+      for (const exercise of routineExercisesData) {
+        if (exercise.id) {
+          await PutRoutineExercise(exercise.id, exercise);
+        } else {
+          await PostRoutineExercise([exercise]);
+        }
+      }
     } else {
-      await PostRoutine(routineData);
+      const newRoutine = await PostRoutine(routineData);
+      const routineId = newRoutine[0].id;
+      const routineExercises = routineExercisesData.map((e) => ({
+        ...e,
+        routineId,
+      }));
+
+      await PostRoutineExercise(routineExercises);
     }
+
+    onRoutineSet();
   };
 
   const toggleMuscleSelection = (muscleId: string) => {
@@ -111,6 +120,10 @@ export const RoutineForm = ({
       duration: 0,
       details: "",
     } as RoutineExercise;
+
+    if (routineToEdit) {
+      routineExercise.routineId = routineToEdit.id;
+    }
 
     setRoutineExercisesData((value) => [...value, routineExercise]);
   };
