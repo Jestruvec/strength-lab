@@ -39,6 +39,7 @@ export const RoutinesTable = ({
     }
 
     setSelectAll(isChecked);
+    console.log(selectAll);
 
     if (error) {
       return <ErrorMessage message={error} />;
