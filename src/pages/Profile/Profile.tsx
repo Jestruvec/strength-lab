@@ -1,11 +1,9 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/context";
 import { useUserProfileCrud } from "@/hooks";
 import { ProfileForm } from "@/components";
 
 export const Profile = () => {
-  const navigate = useNavigate();
   const { user } = useAuthContext();
   const { loading, error, profile, fetchProfile } = useUserProfileCrud();
 
@@ -13,12 +11,16 @@ export const Profile = () => {
     fetchProfile(user.id);
   }, [fetchProfile, user.id]);
 
+  const onProfileSet = () => {
+    fetchProfile(user.id);
+  };
+
   if (loading) {
     return <>loading</>;
   }
 
   if (error) {
-    return <ProfileForm onProfileSet={() => navigate("/profile")} />;
+    return <ProfileForm onProfileSet={onProfileSet} />;
   }
 
   if (profile) {

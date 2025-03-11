@@ -46,6 +46,7 @@ export const ProfileForm = ({ onProfileSet }: ProfileFormProps) => {
     }
 
     await postProfile(formData);
+
     onProfileSet();
   };
 

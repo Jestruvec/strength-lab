@@ -7,7 +7,7 @@ export const RegisterForm = () => {
   const [password, setPassword] = useState("");
   const { error, loading, register } = useAuthContext();
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!username || !password) {
@@ -15,7 +15,11 @@ export const RegisterForm = () => {
       return;
     }
 
-    register(username, password);
+    await register(username, password);
+
+    alert(
+      "Confirme su cuenta dando click en el enlace enviado al correo electronico registrado"
+    );
   };
 
   return (

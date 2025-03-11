@@ -54,10 +54,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
 
       if (error) throw new Error(error.message);
-
-      alert(
-        "Confirme su cuenta dando click en el enlace enviado al correo electronico registrado"
-      );
     } catch (err) {
       setError(err.message);
     } finally {

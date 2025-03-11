@@ -2,10 +2,10 @@ import { User } from "./";
 
 export interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => void;
-  logout: () => void;
-  register: (email: string, password: string) => void;
-  recoverPassword: (email: string) => void;
+  login: (email: string, password: string) => promise<void>;
+  logout: () => promise<void>;
+  register: (email: string, password: string) => promise<void>;
+  recoverPassword: (email: string) => promise<void>;
   loading: boolean;
   error: string | null;
 }

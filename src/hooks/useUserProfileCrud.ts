@@ -45,7 +45,7 @@ export const useUserProfileCrud = () => {
         throw error;
       }
 
-      setProfile(profile);
+      return profile;
     } catch (error) {
       setError(error.mesage);
     } finally {
@@ -53,13 +53,15 @@ export const useUserProfileCrud = () => {
     }
   };
 
-  const upsertProfile = async (
+  const putProfile = async (
     userId: string,
     profileData: Partial<UserProfile>
   ) => {
+    setLoading(true);
+    setError(null);
+
     try {
-      setLoading(true);
-      const { data, error } = await supabase
+      const { data: profile, error } = await supabase
         .from("user_profile")
         .upsert({ ...profileData, id: userId })
         .select()
@@ -69,7 +71,7 @@ export const useUserProfileCrud = () => {
         throw error;
       }
 
-      setProfile(data);
+      return profile;
     } catch (err) {
       setError(err.message);
     } finally {
@@ -78,8 +80,10 @@ export const useUserProfileCrud = () => {
   };
 
   const deleteProfile = async (userId: string) => {
+    setLoading(true);
+    setError(null);
+
     try {
-      setLoading(true);
       const { error } = await supabase
         .from("user_profile")
         .delete()
@@ -88,8 +92,6 @@ export const useUserProfileCrud = () => {
       if (error) {
         throw error;
       }
-
-      setProfile(null);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -102,7 +104,7 @@ export const useUserProfileCrud = () => {
     loading,
     error,
     fetchProfile,
-    upsertProfile,
+    putProfile,
     deleteProfile,
     postProfile,
   };
