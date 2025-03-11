@@ -42,6 +42,12 @@ export const Train = () => {
           />
         </div>
 
+        {!filteredItems.length && (
+          <div className="flex justify-center">
+            <span>No hay rutina asignada para este dia</span>
+          </div>
+        )}
+
         {filteredItems.map(({ routine_exercises, id, name }) => {
           return (
             <div key={id}>
