@@ -29,7 +29,7 @@ export const FormSelect = ({
         id={id}
         value={value}
         onChange={(e) => setValue(Number(e.target.value))}
-        className="p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300"
+        className="p-2 border text-sm border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300"
         required={required}
       >
         {options.map((option) => (

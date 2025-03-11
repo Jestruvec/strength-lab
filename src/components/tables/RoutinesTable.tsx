@@ -128,7 +128,17 @@ export const RoutinesTable = ({
               </td>
               <td className="text-center">{routine.name}</td>
               <td className="text-center">{routine.day}</td>
-              <td className="text-center">lorem</td>
+              <td className="text-center">
+                {routine.routine_exercises.reduce((acc, item) => {
+                  const muscles = item.exercises.exercise_muscles.map(
+                    (e) => e.muscles.name
+                  );
+
+                  muscles.forEach((e) => !acc.includes(e) && acc.push(e));
+
+                  return acc;
+                }, [] as string[])}
+              </td>
               <td className="text-center">
                 {routine.routine_exercises.length}
               </td>

@@ -1,3 +1,5 @@
+import { Muscle } from "./";
+
 export interface Exercise {
   id: string;
   created_at: string;
@@ -7,13 +9,13 @@ export interface Exercise {
   unilateral: boolean;
   variant: string;
   steps: string[];
-  exercise_main_muscles: ExerciseMainMuscle[];
-  exercise_secondary_muscles: ExerciseMainMuscle[];
+  exercise_muscles: ExerciseMuscle[];
 }
 
-interface ExerciseMainMuscle {
+interface ExerciseMuscle {
   id: string;
   created_at: string;
   exerciseId: string;
   muscleId: string;
+  muscles: Muscle;
 }

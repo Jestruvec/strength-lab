@@ -17,7 +17,13 @@ export const useRoutinesCrud = () => {
             routine_exercises (
                 *,
                 exercises(
-                    *
+                    *,
+                    exercise_muscles (
+                      *,
+                      muscles (
+                      *
+                      )
+                    )
                 )
             )`);
 

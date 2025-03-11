@@ -16,8 +16,7 @@ export const useExercisesCrud = () => {
       const { data: routines, error } = await supabase.from("exercises")
         .select(`
           *,
-          exercise_main_muscles (*),
-          exercise_secondary_muscles (*)
+          exercise_muscles (*)
           `);
 
       if (error) {

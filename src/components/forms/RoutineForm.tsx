@@ -1,5 +1,10 @@
 import { useEffect, useState, useMemo } from "react";
-import { CustomButton, FormField, EmptySection } from "@/components";
+import {
+  CustomButton,
+  FormField,
+  EmptySection,
+  FormSelect,
+} from "@/components";
 import {
   useExercisesCrud,
   useMusclesCrud,
@@ -28,7 +33,7 @@ export const RoutineForm = ({
 
   const [routineData, setRoutineData] = useState<Routine>({
     name: "",
-    day: 1,
+    day: 0,
     user_id: user.id,
   } as Routine);
 
@@ -49,19 +54,21 @@ export const RoutineForm = ({
   const filteredExercises = useMemo(() => {
     return exercises.filter(
       (exercise) =>
-        exercise.name.toLocaleLowerCase().includes(searchQuery.toLowerCase()) &&
-        (exercise.exercise_main_muscles.some((e) =>
-          selectedMusclesIds.includes(e.muscleId)
-        ) ||
-          exercise.exercise_secondary_muscles.some((e) =>
-            selectedMusclesIds.includes(e.muscleId)
-          ))
+        exercise.name.toLocaleLowerCase().includes(searchQuery.toLowerCase())
+      // && exercise.exercise_muscles.some((e) =>
+      //   selectedMusclesIds.includes(e.muscleId)
+      // )
     );
-  }, [exercises, selectedMusclesIds, searchQuery]);
+  }, [exercises, searchQuery]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const isEdition = !!routineToEdit;
+
+    if (!routineExercisesData.length) {
+      alert("Seleccione 1 o mas ejercicios");
+      return;
+    }
 
     if (isEdition) {
       await PutRoutine(routineToEdit.id, routineData);
@@ -170,11 +177,8 @@ export const RoutineForm = ({
           required
         />
 
-        <FormField
+        <FormSelect
           id="day"
-          label="Dia"
-          placeholder="Dia"
-          type="numer"
           value={routineData.day}
           setValue={(newValue: string) =>
             setRoutineData((prevRoutine) => ({
@@ -182,7 +186,16 @@ export const RoutineForm = ({
               day: Number(newValue),
             }))
           }
+          label="Dia de entrenamiento"
           required
+          options={[
+            { value: 0, label: "Seleccione un dia o deje sin asignar" },
+            { value: 1, label: "Día 1" },
+            { value: 2, label: "Día 2" },
+            { value: 3, label: "Día 3" },
+            { value: 4, label: "Día 4" },
+            { value: 5, label: "Día 5" },
+          ]}
         />
 
         <label className="text-sm font-medium">Seleccionar ejercicios</label>
