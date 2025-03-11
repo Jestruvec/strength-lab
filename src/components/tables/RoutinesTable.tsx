@@ -54,6 +54,24 @@ export const RoutinesTable = ({
     routines.forEach((routine) => DeleteRoutine(routine.id));
   };
 
+  const getRoutineData = (routine: Routine) => {
+    return routine.routine_exercises.reduce(
+      (acc, item) => {
+        acc.sets += item.sets;
+        acc.reps += item.sets * item.reps;
+        acc.duration += item.duration;
+        const muscles = item.exercises.exercise_muscles.map(
+          (e) => e.muscles.name
+        );
+
+        muscles.forEach((e) => !acc.muscles.includes(e) && acc.muscles.push(e));
+
+        return acc;
+      },
+      { sets: 0, reps: 0, duration: 0, muscles: [] }
+    );
+  };
+
   return (
     <table>
       <thead>
@@ -127,38 +145,15 @@ export const RoutinesTable = ({
                 />
               </td>
               <td className="text-center">{routine.name}</td>
-              <td className="text-center">{routine.day}</td>
-              <td className="text-center">
-                {routine.routine_exercises.reduce((acc, item) => {
-                  const muscles = item.exercises.exercise_muscles.map(
-                    (e) => e.muscles.name
-                  );
-
-                  muscles.forEach((e) => !acc.includes(e) && acc.push(e));
-
-                  return acc;
-                }, [] as string[])}
-              </td>
+              <td className="text-center">{routine.day || "Sin asignar"}</td>
+              <td className="text-center">{getRoutineData(routine).muscles}</td>
               <td className="text-center">
                 {routine.routine_exercises.length}
               </td>
+              <td className="text-center">{getRoutineData(routine).sets}</td>
+              <td className="text-center">{getRoutineData(routine).reps}</td>
               <td className="text-center">
-                {routine.routine_exercises.reduce((acc, item) => {
-                  acc += item.sets;
-                  return acc;
-                }, 0)}
-              </td>
-              <td className="text-center">
-                {routine.routine_exercises.reduce((acc, item) => {
-                  acc += item.reps * item.sets;
-                  return acc;
-                }, 0)}
-              </td>
-              <td className="text-center">
-                {routine.routine_exercises.reduce((acc, item) => {
-                  acc += item.duration;
-                  return acc;
-                }, 0)}
+                {getRoutineData(routine).duration}
               </td>
             </tr>
           );

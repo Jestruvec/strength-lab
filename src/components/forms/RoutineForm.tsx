@@ -250,8 +250,8 @@ export const RoutineForm = ({
 
         <label className="text-sm font-medium">Ejercicios seleccionados</label>
 
-        <div className="rounded-md border border-gray-400 shadow-md h-40 overflow-y-auto overflow-x-hidden">
-          <table className="table-fixed w-100">
+        <div className="rounded-md border  border-gray-400 shadow-md h-40 overflow-y-auto overflow-x-hidden">
+          <table className="w-full">
             <thead>
               <tr className="border-b border-gray-400">
                 <th>
