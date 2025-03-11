@@ -33,13 +33,7 @@ const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   );
 };
 
-const Sidebar = ({
-  isSidebarOpen,
-  toggleSidebar,
-}: {
-  isSidebarOpen: boolean;
-  toggleSidebar: () => void;
-}) => {
+const Sidebar = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
   return (
     <aside
       className={`bg-gray-700 z-10 text-white w-full lg:w-64 fixed bottom-0 lg:top-16 lg:h-full overflow-y-auto transform transition-transform duration-200 ease-in-out ${
@@ -54,7 +48,6 @@ const Sidebar = ({
             <Link
               to="/"
               className="hover:text-gray-300 flex items-center gap-2"
-              onClick={toggleSidebar}
             >
               <FaHome />
               Inicio
@@ -64,7 +57,6 @@ const Sidebar = ({
             <Link
               to="/routines"
               className="hover:text-gray-300 flex gap-2 items-center"
-              onClick={toggleSidebar}
             >
               <FaBook />
               Rutinas
@@ -74,7 +66,6 @@ const Sidebar = ({
             <Link
               to="/train"
               className="hover:text-gray-300 flex gap-2 items-center"
-              onClick={toggleSidebar}
             >
               <FaDumbbell />
               Entrenar
@@ -84,7 +75,6 @@ const Sidebar = ({
             <Link
               to="/profile"
               className="hover:text-gray-300 flex items-center gap-2"
-              onClick={toggleSidebar}
             >
               <FaUser />
               Perfil
@@ -94,7 +84,6 @@ const Sidebar = ({
             <Link
               to="/settings"
               className="hover:text-gray-300 flex items-center gap-2"
-              onClick={toggleSidebar}
             >
               <FaCog />
               Configuracion
@@ -107,7 +96,7 @@ const Sidebar = ({
 };
 
 export const MainLayout = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -116,12 +105,12 @@ export const MainLayout = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <Header toggleSidebar={toggleSidebar} />
-      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <Sidebar isSidebarOpen={isSidebarOpen} />
       <main
-        className={`fixed lg:h-[54.5rem] overflow-auto p-4 top-16 w-full transform transition-transform duration-200 ease-in-out 
+        className={`fixed lg:h-[54.5rem] w-[100vw] overflow-auto p-4 top-16 transform transition-transform duration-200 ease-in-out 
         ${
           isSidebarOpen
-            ? "lg:translate-x-64 h-[37rem]"
+            ? "lg:translate-x-64 h-[37rem] lg:w-[calc(100vw-256px)]"
             : "lg:-translate-x-0 h-[49rem]"
         }
         `}

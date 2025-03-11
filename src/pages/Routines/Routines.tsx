@@ -1,12 +1,24 @@
-import { useState } from "react";
-import { CustomButton, RoutinesTable, RoutineForm } from "@/components";
+import { useState, useEffect } from "react";
+import {
+  CustomButton,
+  RoutinesTable,
+  RoutineForm,
+  ErrorMessage,
+} from "@/components";
 import { Routine } from "@/types";
+import { useRoutinesCrud } from "@/hooks";
 
 export const Routines = () => {
+  const { loading, error, routines, fetchRoutines, DeleteRoutine } =
+    useRoutinesCrud();
   const [isCreatingRoutine, setIsCreatingRoutine] = useState(false);
   const [routineToEdit, setRoutineToEdit] = useState<Routine | null>(null);
 
   let content: React.ReactNode;
+
+  useEffect(() => {
+    fetchRoutines();
+  }, [fetchRoutines]);
 
   const toggleIsCreatingRoutine = () => {
     setIsCreatingRoutine((oldValue) => !oldValue);
@@ -25,7 +37,21 @@ export const Routines = () => {
       />
     );
   } else {
-    content = <RoutinesTable onRowClick={(routine) => editRoutine(routine)} />;
+    content = (
+      <RoutinesTable
+        onRowClick={(routine) => editRoutine(routine)}
+        routines={routines}
+        deleteRoutine={DeleteRoutine}
+      />
+    );
+  }
+
+  if (loading) {
+    return <>loading</>;
+  }
+
+  if (error) {
+    return <ErrorMessage message={error} />;
   }
 
   return (

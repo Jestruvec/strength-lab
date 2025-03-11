@@ -230,9 +230,14 @@ export const RoutineForm = ({
               return (
                 <div
                   key={exercise.id}
-                  className="p-2 cursor-pointer hover:bg-gray-200 border-b border-gray-400"
+                  className="cursor-pointer hover:bg-gray-200 border-b border-gray-400 flex items-center gap-2"
                   onClick={() => addRoutineExercise(exercise)}
                 >
+                  <img
+                    className="w-20 h-20"
+                    src={exercise.imgUrl}
+                    alt={exercise.name}
+                  />
                   <span className="text-sm">{exercise.name}</span>
                 </div>
               );

@@ -1,24 +1,22 @@
-import { useEffect, useState } from "react";
-import { useRoutinesCrud } from "@/hooks";
-import { ErrorMessage } from "../errors/ErrorMessage";
+import { useState } from "react";
 import { Routine } from "@/types";
 import { FaTrash } from "react-icons/fa";
 
-export const RoutinesTable = ({
-  onRowClick,
-}: {
+interface RoutinesTableProps {
+  routines: Routine[];
+  deleteRoutine: (id: string) => Promise<void>;
   onRowClick: (params: Routine) => void;
-}) => {
-  const { loading, error, routines, fetchRoutines, DeleteRoutine } =
-    useRoutinesCrud();
+}
+
+export const RoutinesTable = ({
+  routines,
+  deleteRoutine,
+  onRowClick,
+}: RoutinesTableProps) => {
   const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const isAllSelected =
     routines.length > 0 && routines.length === selectedRowIds.length;
-
-  useEffect(() => {
-    fetchRoutines();
-  }, [fetchRoutines]);
 
   const toggleRowSelection = (routineId: string) => {
     if (selectedRowIds.includes(routineId)) {
@@ -40,18 +38,10 @@ export const RoutinesTable = ({
 
     setSelectAll(isChecked);
     console.log(selectAll);
-
-    if (error) {
-      return <ErrorMessage message={error} />;
-    }
-
-    if (loading) {
-      return <>Cargando...</>;
-    }
   };
 
   const deleteAll = () => {
-    routines.forEach((routine) => DeleteRoutine(routine.id));
+    routines.forEach((routine) => deleteRoutine(routine.id));
   };
 
   const getRoutineData = (routine: Routine) => {
