@@ -14,8 +14,6 @@ export const Routines = () => {
   const [isCreatingRoutine, setIsCreatingRoutine] = useState(false);
   const [routineToEdit, setRoutineToEdit] = useState<Routine | null>(null);
 
-  let content: React.ReactNode;
-
   useEffect(() => {
     fetchRoutines();
   }, [fetchRoutines]);
@@ -29,23 +27,6 @@ export const Routines = () => {
     setRoutineToEdit(routine);
     toggleIsCreatingRoutine();
   };
-
-  if (isCreatingRoutine) {
-    content = (
-      <RoutineForm
-        onRoutineSet={toggleIsCreatingRoutine}
-        routineToEdit={routineToEdit}
-      />
-    );
-  } else {
-    content = (
-      <RoutinesTable
-        onRowClick={(routine) => editRoutine(routine)}
-        routines={routines}
-        deleteRoutine={DeleteRoutine}
-      />
-    );
-  }
 
   if (loading) {
     return <>loading</>;
@@ -70,7 +51,18 @@ export const Routines = () => {
         )}
       </div>
 
-      {content}
+      {isCreatingRoutine ? (
+        <RoutineForm
+          onRoutineSet={toggleIsCreatingRoutine}
+          routineToEdit={routineToEdit}
+        />
+      ) : (
+        <RoutinesTable
+          onRowClick={(routine) => editRoutine(routine)}
+          routines={routines}
+          deleteRoutine={DeleteRoutine}
+        />
+      )}
     </div>
   );
 };
