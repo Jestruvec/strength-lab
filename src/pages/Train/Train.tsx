@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useRoutinesCrud } from "@/hooks";
 import { FormSelect, TrainExerciseCard } from "@/components";
+import { trainDays } from "@/utils";
 
 export const Train = () => {
   const [day, setDay] = useState(1);
@@ -32,13 +33,7 @@ export const Train = () => {
             setValue={setDay}
             label="Dia de entrenamiento"
             required
-            options={[
-              { value: 1, label: "Día 1" },
-              { value: 2, label: "Día 2" },
-              { value: 3, label: "Día 3" },
-              { value: 4, label: "Día 4" },
-              { value: 5, label: "Día 5" },
-            ]}
+            options={trainDays}
           />
         </div>
 
