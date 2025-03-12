@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useRoutinesCrud } from "@/hooks";
-import { FormSelect } from "@/components";
+import { FormSelect, TrainExerciseCard } from "@/components";
 
 export const Train = () => {
   const [day, setDay] = useState(1);
@@ -54,51 +54,14 @@ export const Train = () => {
               <h1 className="text-2xl font-bold mb-3">{name}</h1>
 
               <div className="flex flex-col gap-2">
-                {routine_exercises.map(
-                  ({ exercises, sets, reps, duration, details, id }) => {
-                    return (
-                      <div
-                        key={id}
-                        className="flex h-40 gap-2 border rounded-md border-dashed border-gray-400 p-2"
-                      >
-                        <img
-                          className="w-10 flex-2"
-                          src={exercises.imgUrl}
-                          alt={exercises.name}
-                        />
-
-                        <div className="flex-3">
-                          <h3 className="font-bold">{exercises.name}</h3>
-
-                          <div className="flex flex-col">
-                            {exercises.variant && (
-                              <span className="text-xs ">
-                                Variante: {exercises.variant}
-                              </span>
-                            )}
-                            {sets && (
-                              <span className="text-xs ">Series: {sets}</span>
-                            )}
-                            {reps && (
-                              <span className="text-xs ">
-                                Repeticiones: {reps}
-                              </span>
-                            )}
-                            {duration && (
-                              <span className="text-xs ">
-                                Duración: {duration}
-                              </span>
-                            )}
-                          </div>
-
-                          <div className="h-20 overflow-auto text-justify">
-                            {details && <p className="text-xs">{details}</p>}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  }
-                )}
+                {routine_exercises.map((routineExercise) => {
+                  return (
+                    <TrainExerciseCard
+                      key={routineExercise.id}
+                      routineExercise={routineExercise}
+                    />
+                  );
+                })}
               </div>
             </div>
           );

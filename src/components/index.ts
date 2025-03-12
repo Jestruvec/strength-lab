@@ -17,7 +17,10 @@ import { RoutinesTable } from "./tables/RoutinesTable";
 import { ProfileForm } from "./forms/ProfileForm";
 import { RoutineForm } from "./forms/RoutineForm";
 
+import { TrainExerciseCard } from "./cards/TrainExerciseCard";
+
 export {
+  TrainExerciseCard,
   EmptySection,
   RoutineForm,
   RoutinesTable,
