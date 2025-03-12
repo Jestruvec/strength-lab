@@ -19,7 +19,10 @@ import { RoutineForm } from "./forms/RoutineForm";
 
 import { TrainExerciseCard } from "./cards/TrainExerciseCard";
 
+import { Searchbar } from "./searchbar/Searchbar";
+
 export {
+  Searchbar,
   TrainExerciseCard,
   EmptySection,
   RoutineForm,

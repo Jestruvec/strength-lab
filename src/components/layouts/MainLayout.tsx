@@ -34,6 +34,14 @@ const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
 };
 
 const Sidebar = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
+  const navItems = [
+    { label: "Inicio", icon: <FaHome />, url: "/" },
+    { label: "Rutinas", icon: <FaBook />, url: "/routines" },
+    { label: "Entrenar", icon: <FaDumbbell />, url: "/train" },
+    { label: "Perfil", icon: <FaUser />, url: "/profile" },
+    { label: "Configuracion", icon: <FaCog />, url: "/settings" },
+  ];
+
   return (
     <aside
       className={`bg-gray-700 z-10 text-white w-full lg:w-64 fixed bottom-0 lg:top-16 lg:h-full overflow-y-auto transform transition-transform duration-200 ease-in-out ${
@@ -44,51 +52,22 @@ const Sidebar = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
     >
       <nav>
         <ul>
-          <li className="mb-2 p-2 hover:bg-gray-600 cursor-pointer">
-            <Link
-              to="/"
-              className="hover:text-gray-300 flex items-center gap-2"
-            >
-              <FaHome />
-              Inicio
-            </Link>
-          </li>
-          <li className="mb-2 p-2 hover:bg-gray-600 cursor-pointer ">
-            <Link
-              to="/routines"
-              className="hover:text-gray-300 flex gap-2 items-center"
-            >
-              <FaBook />
-              Rutinas
-            </Link>
-          </li>
-          <li className="mb-2 p-2 hover:bg-gray-600 cursor-pointer ">
-            <Link
-              to="/train"
-              className="hover:text-gray-300 flex gap-2 items-center"
-            >
-              <FaDumbbell />
-              Entrenar
-            </Link>
-          </li>
-          <li className="mb-2 p-2 hover:bg-gray-600 cursor-pointer">
-            <Link
-              to="/profile"
-              className="hover:text-gray-300 flex items-center gap-2"
-            >
-              <FaUser />
-              Perfil
-            </Link>
-          </li>
-          <li className="mb-2 p-2 hover:bg-gray-600 cursor-pointer">
-            <Link
-              to="/settings"
-              className="hover:text-gray-300 flex items-center gap-2"
-            >
-              <FaCog />
-              Configuracion
-            </Link>
-          </li>
+          {navItems.map((item, index) => {
+            return (
+              <li
+                key={index}
+                className="mb-2 p-2 hover:bg-gray-600 cursor-pointer"
+              >
+                <Link
+                  to={item.url}
+                  className="hover:text-gray-300 flex items-center gap-2"
+                >
+                  {item.icon}
+                  {item.label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </nav>
     </aside>
@@ -107,7 +86,7 @@ export const MainLayout = () => {
       <Header toggleSidebar={toggleSidebar} />
       <Sidebar isSidebarOpen={isSidebarOpen} />
       <main
-        className={`fixed lg:h-[54.5rem] w-[100vw] overflow-auto p-4 top-16 transform transition-transform duration-200 ease-in-out 
+        className={`fixed w-[100vw] overflow-auto p-4 top-16 transform transition-transform duration-200 ease-in-out 
         ${
           isSidebarOpen
             ? "lg:translate-x-64 h-[37rem] lg:w-[calc(100vw-256px)]"
