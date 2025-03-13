@@ -37,7 +37,7 @@ export const Routines = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center overflow-auto">
+    <div className="flex flex-col justify-center">
       <div className="flex items-center gap-2 mb-2">
         <CustomButton
           label={isCreatingRoutine ? "Regresar" : "Crear rutina"}

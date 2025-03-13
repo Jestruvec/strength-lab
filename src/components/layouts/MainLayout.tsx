@@ -44,7 +44,7 @@ const Sidebar = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
 
   return (
     <aside
-      className={`bg-gray-700 z-10 text-white w-full lg:w-64 fixed bottom-0 lg:top-16 lg:h-full overflow-y-auto transform transition-transform duration-200 ease-in-out ${
+      className={`bg-gray-700 z-10 text-white w-full lg:w-64 fixed bottom-0 lg:top-16 overflow-y-auto transform transition-transform duration-200 ease-in-out ${
         isSidebarOpen
           ? "translate-x-0"
           : "translate-y-full lg:-translate-x-full lg:translate-y-0"
@@ -86,7 +86,7 @@ export const MainLayout = () => {
       <Header toggleSidebar={toggleSidebar} />
       <Sidebar isSidebarOpen={isSidebarOpen} />
       <main
-        className={`fixed w-[100vw] overflow-auto p-4 top-16 transform transition-transform duration-200 ease-in-out 
+        className={`fixed w-[100vw] h-full overflow-auto p-4 top-16 transform transition-transform duration-200 ease-in-out 
         ${
           isSidebarOpen
             ? "lg:translate-x-64 h-[37rem] lg:w-[calc(100vw-256px)]"
