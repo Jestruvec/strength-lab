@@ -86,7 +86,7 @@ export const MainLayout = () => {
       <Header toggleSidebar={toggleSidebar} />
       <Sidebar isSidebarOpen={isSidebarOpen} />
       <main
-        className={`fixed w-[100vw] h-full overflow-auto p-4 top-16 transform transition-transform duration-200 ease-in-out 
+        className={`fixed w-screen lg:h-[calc(100vh-4rem)] overflow-auto p-4 top-16 transform transition-transform duration-200 ease-in-out 
         ${
           isSidebarOpen
             ? "lg:translate-x-64 h-[37rem] lg:w-[calc(100vw-256px)]"
