@@ -27,13 +27,9 @@ export const TrainExerciseCard = ({
           {exercises.variant && (
             <span className="text-xs">Variante: {exercises.variant}</span>
           )}
-          {sets !== 0 && sets !== null && sets !== undefined && (
-            <span className="text-xs">Series: {sets}</span>
-          )}
-          {reps !== 0 && reps !== null && reps !== undefined && (
-            <span className="text-xs">Repeticiones: {reps}</span>
-          )}
-          {duration !== 0 && duration !== null && duration !== undefined && (
+          {sets !== 0 && <span className="text-xs">Series: {sets}</span>}
+          {reps !== 0 && <span className="text-xs">Repeticiones: {reps}</span>}
+          {duration !== 0 && (
             <span className="text-xs">Duración: {duration}</span>
           )}
         </div>

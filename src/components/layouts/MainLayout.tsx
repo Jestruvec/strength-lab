@@ -9,15 +9,21 @@ import {
   FaUser,
   FaCog,
   FaBook,
+  FaUserFriends,
 } from "react-icons/fa";
 
 const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   const navigate = useNavigate();
   const { logout } = useAuthContext();
+  const [showMenu, setShowMenu] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate("/login");
+  };
+
+  const toggleFriendshipRequestMenu = () => {
+    setShowMenu(!showMenu);
   };
 
   return (
@@ -26,9 +32,32 @@ const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
         <FaBars className="h-4 w-4 " />
       </button>
 
-      <button onClick={handleLogout} className="cursor-pointer">
-        <FaSignOutAlt className="h-4 w-4 text-red-500" />
-      </button>
+      <div className="flex gap-8">
+        <button
+          onClick={toggleFriendshipRequestMenu}
+          className="cursor-pointer relative"
+        >
+          <FaUserFriends className="h-4 w-4" />
+
+          {showMenu && (
+            <div className="absolute shadow-md rounded-md w-40 text-black bg-white top-6 right-0">
+              <ul>
+                {[1, 2, 3, 4, 5].map((e) => {
+                  return (
+                    <li key={e}>
+                      <span>lorem</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+        </button>
+
+        <button onClick={handleLogout} className="cursor-pointer">
+          <FaSignOutAlt className="h-4 w-4 text-red-500" />
+        </button>
+      </div>
     </header>
   );
 };

@@ -43,21 +43,17 @@ export const Home = () => {
 
   return (
     <>
-      <section>
-        <h1 className="text-2xl font-bold">Agregar amigos</h1>
+      {nonFriendProfiles.length !== 0 && (
+        <section>
+          <h1 className="text-2xl font-bold">Agregar amigos</h1>
 
-        <div className="flex items-center gap-2 mb-3 py-4 overflow-x-auto overflow-y-hidden">
-          {nonFriendProfiles.length ? (
-            nonFriendProfiles.map((profile) => (
+          <div className="flex items-center gap-2 mb-3 py-4 overflow-x-auto overflow-y-hidden">
+            {nonFriendProfiles.map((profile) => (
               <FriendshipRequestCard key={profile.id} userProfile={profile} />
-            ))
-          ) : (
-            <div className="h-20 w-100 flex justify-center items-center">
-              <EmptySection />
-            </div>
-          )}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section>
         <h1 className="text-2xl font-bold">Posts</h1>
