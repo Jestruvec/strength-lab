@@ -1,25 +1,29 @@
 import { useState, useCallback } from "react";
 import { supabase } from "@/utils";
-import { UserProfile } from "@/types";
+import { Post } from "@/types";
 
-export const useUserProfileCrud = () => {
-  const [profiles, setProfiles] = useState<UserProfile[]>([]);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+const TABLE_NAME = "posts";
+
+export const usePostsCrud = () => {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchProfiles = useCallback(async () => {
+  const fetchPosts = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const { data, error } = await supabase.from("user_profile").select("*");
+      const { data, error } = await supabase.from(TABLE_NAME).select(`*,
+            user_profile (*)
+        `);
 
       if (error) {
         throw error;
       }
 
-      setProfiles(data);
+      setPosts(data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -27,22 +31,22 @@ export const useUserProfileCrud = () => {
     }
   }, []);
 
-  const fetchProfile = useCallback(async (userId: string) => {
+  const fetchPost = useCallback(async (id: string) => {
     setLoading(true);
     setError(null);
 
     try {
       const { data, error } = await supabase
-        .from("user_profile")
+        .from(TABLE_NAME)
         .select("*")
-        .eq("id", userId)
+        .eq("id", id)
         .single();
 
       if (error) {
         throw error;
       }
 
-      setProfile(data);
+      setPost(data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -50,14 +54,14 @@ export const useUserProfileCrud = () => {
     }
   }, []);
 
-  const postProfile = async (userProfileData: UserProfile) => {
+  const postPost = async (data: Post) => {
     setLoading(true);
     setError(null);
 
     try {
-      const { data: profile, error } = await supabase
-        .from("user_profile")
-        .insert([userProfileData])
+      const { data: post, error } = await supabase
+        .from(TABLE_NAME)
+        .insert([data])
         .select()
         .single();
 
@@ -65,7 +69,7 @@ export const useUserProfileCrud = () => {
         throw error;
       }
 
-      return profile;
+      return post;
     } catch (error) {
       setError(error.mesage);
     } finally {
@@ -73,13 +77,13 @@ export const useUserProfileCrud = () => {
     }
   };
 
-  const putProfile = async (id: string, data: UserProfile) => {
+  const putPost = async (id: string, data: Post) => {
     setLoading(true);
     setError(null);
 
     try {
-      const { data: profile, error } = await supabase
-        .from("user_profile")
+      const { data: post, error } = await supabase
+        .from(TABLE_NAME)
         .update(data)
         .eq("id", id)
         .select();
@@ -88,7 +92,7 @@ export const useUserProfileCrud = () => {
         throw error;
       }
 
-      return profile;
+      return post;
     } catch (error) {
       setError(error.message);
     } finally {
@@ -96,15 +100,12 @@ export const useUserProfileCrud = () => {
     }
   };
 
-  const deleteProfile = async (userId: string) => {
+  const deletePost = async (id: string) => {
     setLoading(true);
     setError(null);
 
     try {
-      const { error } = await supabase
-        .from("user_profile")
-        .delete()
-        .eq("id", userId);
+      const { error } = await supabase.from(TABLE_NAME).delete().eq("id", id);
 
       if (error) {
         throw error;
@@ -117,16 +118,16 @@ export const useUserProfileCrud = () => {
   };
 
   return {
-    profile,
-    profiles,
+    posts,
+    post,
     loading,
     error,
-    fetchProfiles,
-    fetchProfile,
-    putProfile,
-    deleteProfile,
-    postProfile,
+    fetchPosts,
+    fetchPost,
+    putPost,
+    deletePost,
+    postPost,
   };
 };
 
-export default useUserProfileCrud;
+export default usePostsCrud;

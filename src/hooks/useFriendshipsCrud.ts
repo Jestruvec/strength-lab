@@ -1,25 +1,27 @@
 import { useState, useCallback } from "react";
 import { supabase } from "@/utils";
-import { UserProfile } from "@/types";
+import { Friendship } from "@/types";
 
-export const useUserProfileCrud = () => {
-  const [profiles, setProfiles] = useState<UserProfile[]>([]);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+const TABLE_NAME = "friendships";
+
+export const useFriendshipsCrud = () => {
+  const [friendships, setFriendships] = useState<Friendship[]>([]);
+  const [friendship, setFriendship] = useState<Friendship | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchProfiles = useCallback(async () => {
+  const fetchFriendshipRequests = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const { data, error } = await supabase.from("user_profile").select("*");
+      const { data, error } = await supabase.from(TABLE_NAME).select("*");
 
       if (error) {
         throw error;
       }
 
-      setProfiles(data);
+      setFriendships(data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -27,22 +29,22 @@ export const useUserProfileCrud = () => {
     }
   }, []);
 
-  const fetchProfile = useCallback(async (userId: string) => {
+  const fetchFriendshipRequest = useCallback(async (id: string) => {
     setLoading(true);
     setError(null);
 
     try {
       const { data, error } = await supabase
-        .from("user_profile")
+        .from(TABLE_NAME)
         .select("*")
-        .eq("id", userId)
+        .eq("id", id)
         .single();
 
       if (error) {
         throw error;
       }
 
-      setProfile(data);
+      setFriendship(data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -50,14 +52,14 @@ export const useUserProfileCrud = () => {
     }
   }, []);
 
-  const postProfile = async (userProfileData: UserProfile) => {
+  const postFriendshipRequest = async (data: Friendship) => {
     setLoading(true);
     setError(null);
 
     try {
       const { data: profile, error } = await supabase
-        .from("user_profile")
-        .insert([userProfileData])
+        .from(TABLE_NAME)
+        .insert([data])
         .select()
         .single();
 
@@ -73,13 +75,13 @@ export const useUserProfileCrud = () => {
     }
   };
 
-  const putProfile = async (id: string, data: UserProfile) => {
+  const putFriendshipRequest = async (id: string, data: Friendship) => {
     setLoading(true);
     setError(null);
 
     try {
-      const { data: profile, error } = await supabase
-        .from("user_profile")
+      const { data: friendshipRequest, error } = await supabase
+        .from(TABLE_NAME)
         .update(data)
         .eq("id", id)
         .select();
@@ -88,7 +90,7 @@ export const useUserProfileCrud = () => {
         throw error;
       }
 
-      return profile;
+      return friendshipRequest;
     } catch (error) {
       setError(error.message);
     } finally {
@@ -96,15 +98,12 @@ export const useUserProfileCrud = () => {
     }
   };
 
-  const deleteProfile = async (userId: string) => {
+  const deleteFriendshipRequest = async (id: string) => {
     setLoading(true);
     setError(null);
 
     try {
-      const { error } = await supabase
-        .from("user_profile")
-        .delete()
-        .eq("id", userId);
+      const { error } = await supabase.from(TABLE_NAME).delete().eq("id", id);
 
       if (error) {
         throw error;
@@ -117,16 +116,16 @@ export const useUserProfileCrud = () => {
   };
 
   return {
-    profile,
-    profiles,
+    friendships,
+    friendship,
     loading,
     error,
-    fetchProfiles,
-    fetchProfile,
-    putProfile,
-    deleteProfile,
-    postProfile,
+    fetchFriendshipRequests,
+    fetchFriendshipRequest,
+    putFriendshipRequest,
+    deleteFriendshipRequest,
+    postFriendshipRequest,
   };
 };
 
-export default useUserProfileCrud;
+export default useFriendshipsCrud;

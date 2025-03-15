@@ -16,12 +16,21 @@ import { RoutinesTable } from "./tables/RoutinesTable";
 
 import { ProfileForm } from "./forms/ProfileForm";
 import { RoutineForm } from "./forms/RoutineForm";
+import { PostForm } from "./forms/PostForm";
 
 import { TrainExerciseCard } from "./cards/TrainExerciseCard";
+import { FriendshipRequestCard } from "./cards/FriendshipRequestCard";
+import { PostCard } from "./cards/PostCard";
 
 import { Searchbar } from "./searchbar/Searchbar";
 
+import { UserAvatar } from "./avatar/UserAvatar";
+
 export {
+  PostCard,
+  UserAvatar,
+  PostForm,
+  FriendshipRequestCard,
   Searchbar,
   TrainExerciseCard,
   EmptySection,
