@@ -23,7 +23,7 @@ export const CustomButton = ({
       type={type}
       onClick={onClick}
       className={`text-white rounded-md bg-gray-700 cursor-pointer shadow-sm hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed ${
-        size === "md" || size === "lg" ? "p-2" : ""
+        size === "md" || size === "lg" ? "p-2" : "px-1"
       }`}
       disabled={disabled || loading}
     >

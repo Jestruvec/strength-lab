@@ -18,7 +18,11 @@ export const useFriendshipRequestsCrud = () => {
     setError(null);
 
     try {
-      const { data, error } = await supabase.from(TABLE_NAME).select("*");
+      const { data, error } = await supabase.from("friendship_requests")
+        .select(`
+    *,
+    user_profile!friendship_requests_from_fkey (*)    
+  `);
 
       if (error) {
         throw error;

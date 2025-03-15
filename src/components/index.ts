@@ -24,9 +24,15 @@ import { PostCard } from "./cards/PostCard";
 
 import { Searchbar } from "./searchbar/Searchbar";
 
+import { FriendshipRequestMenu } from "./menus/FriendshipRequestMenu";
+
 import { UserAvatar } from "./avatar/UserAvatar";
 
+import { FriendshipRequestList } from "./lists/FriendshipRequestsList";
+
 export {
+  FriendshipRequestList,
+  FriendshipRequestMenu,
   PostCard,
   UserAvatar,
   PostForm,
