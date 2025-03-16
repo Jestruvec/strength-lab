@@ -1,18 +1,87 @@
-import { CustomMenu, UserAvatar } from "@/components";
+import { useState } from "react";
+import { UserAvatar } from "@/components";
+import { useAuthContext } from "@/context";
 import { Post } from "@/types";
 import {
-  FaEllipsisV,
   FaThumbsUp,
   FaThumbsDown,
   FaTrash,
   FaPencilAlt,
+  FaTimes,
+  FaCheck,
 } from "react-icons/fa";
+import { ReactionTypesEnum } from "@/enums";
 
 interface ComponentProps {
   post: Post;
+  onDelete: (id: string) => void;
+  onReact: (post: Post, type: ReactionTypesEnum) => void;
+  onEdit: (id: string, postText: Post) => void;
 }
 
-export const PostCard = ({ post }: ComponentProps) => {
+export const PostCard = ({
+  post,
+  onDelete,
+  onEdit,
+  onReact,
+}: ComponentProps) => {
+  const { user } = useAuthContext();
+  const [isEditing, setIsEditing] = useState(false);
+  const [newText, setNewText] = useState(post.text);
+
+  const getReactions = (): React.ReactNode => {
+    const { reactions } = post;
+    const userReaction = reactions.find((e) => e.userId === user.id);
+    const isLike = userReaction?.type === ReactionTypesEnum.like;
+    const isDislike = userReaction?.type === ReactionTypesEnum.dislike;
+
+    return (
+      <>
+        <button
+          disabled={isLike}
+          onClick={() => handleReact(ReactionTypesEnum.like)}
+        >
+          <FaThumbsUp
+            className={`h-3 w-3 cursor-pointer hover:opacity-50 ${
+              isLike ? "text-blue-500" : "text-gray-700"
+            }`}
+          />
+        </button>
+        <button
+          disabled={isDislike}
+          onClick={() => handleReact(ReactionTypesEnum.dislike)}
+        >
+          <FaThumbsDown
+            className={`h-3 w-3 cursor-pointer hover:opacity-50 ${
+              isDislike ? "text-blue-500" : "text-gray-700"
+            }`}
+          />
+        </button>
+      </>
+    );
+  };
+
+  const handleReact = (type: ReactionTypesEnum) => {
+    onReact(post, type);
+  };
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setNewText(post.text);
+  };
+
+  const handleSaveEdit = () => {
+    if (newText.trim() !== post.text) {
+      onEdit(post.id, { ...post, text: newText });
+    }
+
+    setIsEditing(false);
+  };
+
   return (
     <div className="flex gap-2 border rounded-md border-dashed p-2 border-gray-400">
       <UserAvatar userProfile={post.user_profile} />
@@ -24,30 +93,55 @@ export const PostCard = ({ post }: ComponentProps) => {
               {`${post.user_profile.username} dice:`}
             </h2>
 
-            <CustomMenu
-              icon={<FaEllipsisV />}
-              title=""
-              content={
-                <div className="flex flex-col gap-2 overflow-hidden">
-                  <div className="flex items-center gap-2 hover:bg-gray-100 p-1">
-                    <FaTrash color="red" className="h-3 w-3" />
-                    <span className="text-xs">Eliminar</span>
-                  </div>
-                  <div className="flex items-center gap-2 hover:bg-gray-100 p-1">
-                    <FaPencilAlt className="text-gray-700 h-3 w-3" />
-                    <span className="text-xs">Editar</span>
-                  </div>
-                </div>
-              }
-            />
+            {post.user_id === user.id && (
+              <div className="flex gap-2">
+                {isEditing ? (
+                  <>
+                    <FaCheck
+                      className="text-green-700 h-3 w-3 cursor-pointer hover:opacity-50"
+                      onClick={handleSaveEdit}
+                    />
+                    <FaTimes
+                      color="red"
+                      className="h-3 w-3 cursor-pointer hover:opacity-50"
+                      onClick={handleCancelEdit}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <FaPencilAlt
+                      className="text-gray-700 h-3 w-3 cursor-pointer hover:opacity-50"
+                      onClick={handleEditClick}
+                    />
+                    <FaTrash
+                      color="red"
+                      className="h-3 w-3 cursor-pointer hover:opacity-50"
+                      onClick={() => onDelete(post.id)}
+                    />
+                  </>
+                )}
+              </div>
+            )}
           </div>
 
-          <span className="text-sm">{post.text}</span>
+          {isEditing ? (
+            <input
+              type="text"
+              value={newText}
+              onChange={(e) => setNewText(e.target.value)}
+              className="text-sm p-1 border-b focus:outline-none "
+            />
+          ) : (
+            <span className="text-sm">{post.text}</span>
+          )}
         </div>
 
-        <div className="flex gap-2 justify-end">
-          <FaThumbsUp className="h-3 w-3 text-gray-700" />
-          <FaThumbsDown className="h-3 w-3 text-gray-700" />
+        <div className="flex justify-between">
+          <span className="text-xs text-gray-400">
+            {new Date(post.created_at).toLocaleString()}
+          </span>
+
+          <div className="flex gap-2">{getReactions()}</div>
         </div>
       </div>
     </div>

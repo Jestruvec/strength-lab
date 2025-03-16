@@ -8,8 +8,10 @@ import { Muscle } from "./Muscle";
 import { FriendshipRequest } from "./FriendshipRequest";
 import { Friendship } from "./Friendship";
 import { Post } from "./Post";
+import { Reaction } from "./Reaction";
 
 export type {
+  Reaction,
   Post,
   Friendship,
   FriendshipRequest,

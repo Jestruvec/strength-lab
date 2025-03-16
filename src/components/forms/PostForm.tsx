@@ -19,10 +19,18 @@ export const PostForm = ({ onPostPost }: ComponentProps) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const response = await postPost(post);
+    await postPost(post);
 
-    console.log(response);
+    resetForm();
     onPostPost();
+  };
+
+  const resetForm = () => {
+    setPost({
+      title: null,
+      text: "",
+      user_id: user.id,
+    } as Post);
   };
 
   return (

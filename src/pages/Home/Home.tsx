@@ -3,6 +3,7 @@ import {
   useFriendshipRequestsCrud,
   useUserProfileCrud,
   usePostsCrud,
+  useReactionsCrud,
 } from "@/hooks";
 import {
   EmptySection,
@@ -11,11 +12,14 @@ import {
   PostForm,
 } from "@/components";
 import { useAuthContext } from "@/context";
+import { Post, Reaction } from "@/types";
+import { ReactionTypesEnum } from "@/enums";
 
 export const Home = () => {
   const { user } = useAuthContext();
   const { fetchProfiles, profiles } = useUserProfileCrud();
-  const { fetchPosts, posts } = usePostsCrud();
+  const { postReaction, putReaction } = useReactionsCrud();
+  const { fetchPosts, posts, deletePost, putPost } = usePostsCrud();
   const { fetchFriendshipRequests, friendshipRequests, loading, error } =
     useFriendshipRequestsCrud();
 
@@ -27,11 +31,43 @@ export const Home = () => {
 
   const nonFriendProfiles = useMemo(() => {
     return profiles.filter((profile) => {
-      return !friendshipRequests.some(
-        (request) => request.from === user.id && request.to === profile.id
+      return (
+        profile.id !== user.id &&
+        !friendshipRequests.some(
+          (request) =>
+            (request.from === user.id && request.to === profile.id) ||
+            (request.from === profile.id && request.to === user.id)
+        )
       );
     });
   }, [profiles, friendshipRequests, user.id]);
+
+  const handleDeletePost = async (id: string) => {
+    await deletePost(id);
+    fetchPosts();
+  };
+
+  const handleReact = async (post: Post, type: ReactionTypesEnum) => {
+    const { reactions } = post;
+
+    const userReaction = reactions.find((e) => e.userId === user.id);
+    const data = { postId: post.id, type, userId: user.id } as Reaction;
+
+    if (userReaction) {
+      await putReaction(userReaction.id, data);
+    } else {
+      await postReaction(data);
+    }
+
+    fetchPosts();
+  };
+
+  const handleEditPost = async (id: string, data: Post) => {
+    delete data.user_profile;
+    await putPost(id, data);
+
+    fetchPosts();
+  };
 
   if (loading) {
     return <>Loading...</>;
@@ -65,7 +101,15 @@ export const Home = () => {
         <div className="flex flex-col gap-2">
           {posts.length ? (
             posts.map((post) => {
-              return <PostCard post={post} />;
+              return (
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  onReact={handleReact}
+                  onDelete={handleDeletePost}
+                  onEdit={handleEditPost}
+                />
+              );
             })
           ) : (
             <div className="flex justify-center items-center h-40">

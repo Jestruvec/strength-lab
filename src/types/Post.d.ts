@@ -1,3 +1,4 @@
+import { Reaction } from "./Reaction";
 import { UserProfile } from "./UserProfile";
 
 export interface Post {
@@ -7,4 +8,5 @@ export interface Post {
   text: string;
   user_id: string;
   user_profile?: UserProfile;
+  reactions?: Reaction[];
 }

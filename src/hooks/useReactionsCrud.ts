@@ -1,30 +1,27 @@
 import { useState, useCallback } from "react";
 import { supabase } from "@/utils";
-import { Post } from "@/types";
+import { Reaction } from "@/types";
 
-const TABLE_NAME = "posts";
+const TABLE_NAME = "reactions";
 
-export const usePostsCrud = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [post, setPost] = useState<Post | null>(null);
+export const useReactionsCrud = () => {
+  const [reactions, setReactions] = useState<Reaction[]>([]);
+  const [reaction, setReaction] = useState<Reaction | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchPosts = useCallback(async () => {
+  const fetchReactions = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const { data, error } = await supabase.from(TABLE_NAME).select(`*,
-            user_profile (*),
-            reactions (*)
-        `);
+      const { data, error } = await supabase.from(TABLE_NAME).select("*");
 
       if (error) {
         throw error;
       }
 
-      setPosts(data);
+      setReactions(data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -32,7 +29,7 @@ export const usePostsCrud = () => {
     }
   }, []);
 
-  const fetchPost = useCallback(async (id: string) => {
+  const fetchReaction = useCallback(async (id: string) => {
     setLoading(true);
     setError(null);
 
@@ -47,7 +44,7 @@ export const usePostsCrud = () => {
         throw error;
       }
 
-      setPost(data);
+      setReaction(data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -55,7 +52,7 @@ export const usePostsCrud = () => {
     }
   }, []);
 
-  const postPost = async (data: Post) => {
+  const postReaction = async (data: Reaction) => {
     setLoading(true);
     setError(null);
 
@@ -78,7 +75,7 @@ export const usePostsCrud = () => {
     }
   };
 
-  const putPost = async (id: string, data: Post) => {
+  const putReaction = async (id: string, data: Reaction) => {
     setLoading(true);
     setError(null);
 
@@ -101,7 +98,7 @@ export const usePostsCrud = () => {
     }
   };
 
-  const deletePost = async (id: string) => {
+  const deleteReaction = async (id: string) => {
     setLoading(true);
     setError(null);
 
@@ -119,16 +116,16 @@ export const usePostsCrud = () => {
   };
 
   return {
-    posts,
-    post,
+    reactions,
+    reaction,
     loading,
     error,
-    fetchPosts,
-    fetchPost,
-    putPost,
-    deletePost,
-    postPost,
+    fetchReactions,
+    fetchReaction,
+    putReaction,
+    deleteReaction,
+    postReaction,
   };
 };
 
-export default usePostsCrud;
+export default useReactionsCrud;
