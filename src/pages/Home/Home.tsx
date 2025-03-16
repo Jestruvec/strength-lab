@@ -73,6 +73,8 @@ export const Home = () => {
 
   const handleEditPost = async (id: string, data: Post) => {
     delete data.user_profile;
+    delete data.reactions;
+
     await putPost(id, data);
 
     fetchPosts();
