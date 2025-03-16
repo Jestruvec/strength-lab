@@ -43,7 +43,7 @@ export const FriendshipRequestCard = ({ userProfile }: ComponentProps) => {
       )}
 
       <div className="flex justify-between flex-col flex-1 h-full">
-        <span className="text-sm">{userProfile.username}</span>
+        <span className="text-sm font-bold">{userProfile.username}</span>
         <CustomButton
           label={requestSent ? "Enviada" : "Agregar"}
           size="sm"

@@ -18,7 +18,7 @@ import { ReactionTypesEnum } from "@/enums";
 export const Home = () => {
   const { user } = useAuthContext();
   const { fetchProfiles, profiles } = useUserProfileCrud();
-  const { postReaction, putReaction } = useReactionsCrud();
+  const { postReaction, putReaction, deleteReaction } = useReactionsCrud();
   const { fetchPosts, posts, deletePost, putPost } = usePostsCrud();
   const { fetchFriendshipRequests, friendshipRequests, loading, error } =
     useFriendshipRequestsCrud();
@@ -47,7 +47,16 @@ export const Home = () => {
     fetchPosts();
   };
 
-  const handleReact = async (post: Post, type: ReactionTypesEnum) => {
+  const handleReact = async (
+    post: Post,
+    type: ReactionTypesEnum,
+    removeReaction: boolean,
+    reactionId?: string
+  ) => {
+    if (removeReaction && reactionId) {
+      await deleteReaction(reactionId);
+    }
+
     const { reactions } = post;
 
     const userReaction = reactions.find((e) => e.userId === user.id);

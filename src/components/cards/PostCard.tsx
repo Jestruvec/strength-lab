@@ -15,7 +15,12 @@ import { ReactionTypesEnum } from "@/enums";
 interface ComponentProps {
   post: Post;
   onDelete: (id: string) => void;
-  onReact: (post: Post, type: ReactionTypesEnum) => void;
+  onReact: (
+    post: Post,
+    type: ReactionTypesEnum,
+    deleteReaction: boolean,
+    reactionId?: string
+  ) => void;
   onEdit: (id: string, postText: Post) => void;
 }
 
@@ -38,8 +43,9 @@ export const PostCard = ({
     return (
       <>
         <button
-          disabled={isLike}
-          onClick={() => handleReact(ReactionTypesEnum.like)}
+          onClick={() =>
+            handleReact(ReactionTypesEnum.like, isLike, userReaction?.id)
+          }
         >
           <FaThumbsUp
             className={`h-3 w-3 cursor-pointer hover:opacity-50 ${
@@ -48,8 +54,9 @@ export const PostCard = ({
           />
         </button>
         <button
-          disabled={isDislike}
-          onClick={() => handleReact(ReactionTypesEnum.dislike)}
+          onClick={() =>
+            handleReact(ReactionTypesEnum.dislike, isDislike, userReaction?.id)
+          }
         >
           <FaThumbsDown
             className={`h-3 w-3 cursor-pointer hover:opacity-50 ${
@@ -61,8 +68,12 @@ export const PostCard = ({
     );
   };
 
-  const handleReact = (type: ReactionTypesEnum) => {
-    onReact(post, type);
+  const handleReact = (
+    type: ReactionTypesEnum,
+    deleteReaction: boolean,
+    reactionId?: string
+  ) => {
+    onReact(post, type, deleteReaction, reactionId);
   };
 
   const handleEditClick = () => {
