@@ -10,7 +10,7 @@ export const useFriendshipsCrud = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchFriendshipRequests = useCallback(async () => {
+  const fetchFriendships = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -29,7 +29,7 @@ export const useFriendshipsCrud = () => {
     }
   }, []);
 
-  const fetchFriendshipRequest = useCallback(async (id: string) => {
+  const fetchFriendship = useCallback(async (id: string) => {
     setLoading(true);
     setError(null);
 
@@ -52,7 +52,7 @@ export const useFriendshipsCrud = () => {
     }
   }, []);
 
-  const postFriendshipRequest = async (data: Friendship) => {
+  const postFriendship = async (data: Friendship) => {
     setLoading(true);
     setError(null);
 
@@ -75,7 +75,7 @@ export const useFriendshipsCrud = () => {
     }
   };
 
-  const putFriendshipRequest = async (id: string, data: Friendship) => {
+  const putFriendship = async (id: string, data: Friendship) => {
     setLoading(true);
     setError(null);
 
@@ -98,7 +98,7 @@ export const useFriendshipsCrud = () => {
     }
   };
 
-  const deleteFriendshipRequest = async (id: string) => {
+  const deleteFriendship = async (id: string) => {
     setLoading(true);
     setError(null);
 
@@ -120,11 +120,11 @@ export const useFriendshipsCrud = () => {
     friendship,
     loading,
     error,
-    fetchFriendshipRequests,
-    fetchFriendshipRequest,
-    putFriendshipRequest,
-    deleteFriendshipRequest,
-    postFriendshipRequest,
+    fetchFriendships,
+    fetchFriendship,
+    putFriendship,
+    deleteFriendship,
+    postFriendship,
   };
 };
 

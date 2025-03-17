@@ -1,31 +1,29 @@
-import { FriendshipRequest, UserProfile } from "@/types";
+import { UserProfile } from "@/types";
 import { FaUser } from "react-icons/fa";
-import { useFriendshipRequestsCrud } from "@/hooks";
-import { useAuthContext } from "@/context";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { UserAvatar, CustomButton } from "@/components";
 
 interface ComponentProps {
   userProfile: UserProfile;
+  onRequestSent: (to: string) => void;
+  onRequestDelete: () => void;
 }
 
-export const FriendshipRequestCard = ({ userProfile }: ComponentProps) => {
-  const { loading, postFriendshipRequest } = useFriendshipRequestsCrud();
+export const FriendshipRequestCard = ({
+  userProfile,
+  onRequestSent,
+  onRequestDelete,
+}: ComponentProps) => {
   const [requestSent, setRequestSent] = useState(false);
-  const { user } = useAuthContext();
 
-  const disableBtn = useMemo(() => {
-    return loading || requestSent || false;
-  }, [loading, requestSent]);
-
-  const sendFriendshipRequest = () => {
-    const request = {
-      from: user.id,
-      to: userProfile.id,
-    } as FriendshipRequest;
-
-    postFriendshipRequest(request);
+  const sendRequest = () => {
+    onRequestSent(userProfile.id);
     setRequestSent(true);
+  };
+
+  const deleteRequest = () => {
+    onRequestDelete();
+    setRequestSent(false);
   };
 
   return (
@@ -45,11 +43,10 @@ export const FriendshipRequestCard = ({ userProfile }: ComponentProps) => {
       <div className="flex justify-between flex-col flex-1 h-full">
         <span className="text-sm font-bold">{userProfile.username}</span>
         <CustomButton
-          label={requestSent ? "Enviada" : "Agregar"}
+          label={requestSent ? "Cancelar" : "Agregar"}
           size="sm"
-          disabled={disableBtn}
-          loading={loading}
-          onClick={sendFriendshipRequest}
+          color={requestSent ? "danger" : "info"}
+          onClick={requestSent ? deleteRequest : sendRequest}
         />
       </div>
     </div>
