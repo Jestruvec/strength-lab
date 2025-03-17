@@ -22,13 +22,13 @@ export const RoutineForm = ({
   routineToEdit?: Routine;
 }) => {
   const { user } = useAuthContext();
-  const { muscles, fetchMuscles } = useMusclesCrud();
+  const { fetchMuscles } = useMusclesCrud();
   const { exercises, fetchExercises } = useExercisesCrud();
   const { PostRoutine, PutRoutine } = useRoutinesCrud();
   const { PostRoutineExercise, PutRoutineExercise, DeleteRoutineExercise } =
     useRoutineExercisesCrud();
 
-  const [selectedMusclesIds, setSelectedMusclesIds] = useState<string[]>([]);
+  const [selectedMusclesIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const [routineData, setRoutineData] = useState<Routine>({
@@ -46,8 +46,15 @@ export const RoutineForm = ({
     fetchMuscles();
 
     if (routineToEdit) {
-      setRoutineData(routineToEdit);
-      setRoutineExercisesData(routineToEdit.routine_exercises);
+      const { routine_exercises, ...rest } = routineToEdit;
+
+      setRoutineData(rest);
+      setRoutineExercisesData(
+        routine_exercises.map((exercise) => {
+          delete exercise.exercises;
+          return exercise;
+        })
+      );
     }
   }, [fetchExercises, fetchMuscles, routineToEdit]);
 
@@ -63,17 +70,19 @@ export const RoutineForm = ({
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const isEdition = !!routineToEdit;
 
     if (!routineExercisesData.length) {
       alert("Seleccione 1 o mas ejercicios");
       return;
     }
 
+    const isEdition = !!routineToEdit;
+
     if (isEdition) {
       await PutRoutine(routineToEdit.id, routineData);
 
       const { routine_exercises: previousExercises } = routineToEdit;
+
       const exercisesToDelete = previousExercises.filter((oldExercise) => {
         return !routineExercisesData.some(
           (newExercise) => newExercise.id === oldExercise.id
@@ -88,35 +97,50 @@ export const RoutineForm = ({
       }
 
       for (const exercise of routineExercisesData) {
-        if (exercise.id) {
+        const { id, routineId, exerciseId, sets, reps, duration, details } =
+          exercise;
+        const isEdition = !!routineToEdit.routine_exercises.find(
+          (e) => e.id === id
+        );
+
+        if (isEdition) {
           await PutRoutineExercise(exercise.id, exercise);
         } else {
-          await PostRoutineExercise([exercise]);
+          const data = { routineId, exerciseId, sets, reps, duration, details };
+          await PostRoutineExercise([data] as RoutineExercise[]);
         }
       }
     } else {
       const newRoutine = await PostRoutine(routineData);
       const routineId = newRoutine[0].id;
-      const routineExercises = routineExercisesData.map((e) => ({
-        ...e,
-        routineId,
-      }));
+      const routineExercises = routineExercisesData.map((exercise) => {
+        const { exerciseId, sets, reps, duration, details } = exercise;
 
-      await PostRoutineExercise(routineExercises);
+        return {
+          routineId,
+          exerciseId,
+          sets,
+          reps,
+          duration,
+          details,
+        };
+      });
+
+      await PostRoutineExercise(routineExercises as RoutineExercise[]);
     }
 
     onRoutineSet();
   };
 
-  const toggleMuscleSelection = (muscleId: string) => {
-    if (selectedMusclesIds.includes(muscleId)) {
-      setSelectedMusclesIds((value) => {
-        return value.filter((id) => id !== muscleId);
-      });
-    } else {
-      setSelectedMusclesIds((value) => [...value, muscleId]);
-    }
-  };
+  // const toggleMuscleSelection = (muscleId: string) => {
+  //   if (selectedMusclesIds.includes(muscleId)) {
+  //     setSelectedMusclesIds((value) => {
+  //       return value.filter((id) => id !== muscleId);
+  //     });
+  //   } else {
+  //     setSelectedMusclesIds((value) => [...value, muscleId]);
+  //   }
+  // };
 
   const addRoutineExercise = (exercise: Exercise) => {
     const routineExercise: RoutineExercise = {
@@ -200,7 +224,7 @@ export const RoutineForm = ({
 
         <label className="text-sm font-medium">Seleccionar ejercicios</label>
 
-        <div className="flex gap-1">
+        {/* <div className="flex gap-1">
           {muscles.map((muscle) => {
             return (
               <div
@@ -214,7 +238,7 @@ export const RoutineForm = ({
               </div>
             );
           })}
-        </div>
+        </div> */}
 
         <FormField
           id="searchbar"
