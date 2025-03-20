@@ -28,6 +28,7 @@ export const PostList = () => {
   ) => {
     if (removeReaction && reactionId) {
       await deleteReaction(reactionId);
+      fetchPosts();
       return;
     }
 
