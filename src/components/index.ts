@@ -30,8 +30,12 @@ import { CustomMenu } from "./menus/CustomMenu";
 import { UserAvatar } from "./avatar/UserAvatar";
 
 import { FriendshipRequestList } from "./lists/FriendshipRequestsList";
+import { FriendshipSuggestList } from "./lists/FriendshipSuggestList";
+import { PostList } from "./lists/PostList";
 
 export {
+  PostList,
+  FriendshipSuggestList,
   CustomMenu,
   FriendshipRequestList,
   FriendshipRequestMenu,
