@@ -1,17 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuthContext } from "@/context";
 import { useUserProfileCrud } from "@/hooks";
-import { ProfileForm } from "@/components";
+import { ProfileCard, ProfileForm } from "@/components";
+import { UserProfile } from "@/types";
 
 export const Profile = () => {
   const { user } = useAuthContext();
   const { loading, error, profile, fetchProfile } = useUserProfileCrud();
+  const [profileToEdit, setProfileToEdit] = useState<UserProfile | null>(null);
 
   useEffect(() => {
     fetchProfile(user.id);
   }, [fetchProfile, user.id]);
 
+  const onProfileEdit = () => {
+    setProfileToEdit(profile);
+  };
+
   const onProfileSet = () => {
+    setProfileToEdit(null);
     fetchProfile(user.id);
   };
 
@@ -19,22 +26,17 @@ export const Profile = () => {
     return <>loading</>;
   }
 
-  if (error) {
-    return <ProfileForm onProfileSet={onProfileSet} />;
+  if (error || !!profileToEdit) {
+    return (
+      <ProfileForm
+        onProfileSet={onProfileSet}
+        profileToEdit={profileToEdit}
+        onGoBack={() => setProfileToEdit(null)}
+      />
+    );
   }
 
   if (profile) {
-    return (
-      <>
-        <h1>{`Hola ${profile.username}`}</h1>
-        <div className=" h-full flex items-center justify-center flex-col">
-          <img
-            src={profile.avatar}
-            alt={profile.username}
-            className="opacity-20"
-          />
-        </div>
-      </>
-    );
+    return <ProfileCard profile={profile} onProfileEdit={onProfileEdit} />;
   }
 };

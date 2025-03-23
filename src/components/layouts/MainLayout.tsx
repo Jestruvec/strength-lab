@@ -7,7 +7,7 @@ import {
   FaDumbbell,
   FaHome,
   FaUser,
-  FaCog,
+  // FaCog,
   FaBook,
 } from "react-icons/fa";
 import { FriendshipRequestMenu } from "../menus/FriendshipRequestMenu";
@@ -44,7 +44,7 @@ const Sidebar = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
     { label: "Rutinas", icon: <FaBook />, url: "/routines" },
     { label: "Entrenar", icon: <FaDumbbell />, url: "/train" },
     { label: "Perfil", icon: <FaUser />, url: "/profile" },
-    { label: "Configuracion", icon: <FaCog />, url: "/settings" },
+    // { label: "Configuracion", icon: <FaCog />, url: "/settings" },
   ];
 
   return (
@@ -91,7 +91,7 @@ export const MainLayout = () => {
       <Header toggleSidebar={toggleSidebar} />
       <Sidebar isSidebarOpen={isSidebarOpen} />
       <main
-        className={`fixed w-screen overflow-auto p-4 top-16 transform transition-transform duration-200 ease-in-out 
+        className={`fixed h-[calc(100%-4rem)] w-screen overflow-auto p-4 top-16 transform transition-transform duration-200 ease-in-out 
         ${
           isSidebarOpen
             ? "lg:translate-x-64 lg:w-[calc(100vw-256px)]"

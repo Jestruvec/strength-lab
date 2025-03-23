@@ -21,6 +21,7 @@ import { PostForm } from "./forms/PostForm";
 import { TrainExerciseCard } from "./cards/TrainExerciseCard";
 import { FriendshipRequestCard } from "./cards/FriendshipRequestCard";
 import { PostCard } from "./cards/PostCard";
+import { ProfileCard } from "./cards/ProfileCard";
 
 import { Searchbar } from "./searchbar/Searchbar";
 
@@ -34,6 +35,7 @@ import { FriendshipSuggestList } from "./lists/FriendshipSuggestList";
 import { PostList } from "./lists/PostList";
 
 export {
+  ProfileCard,
   PostList,
   FriendshipSuggestList,
   CustomMenu,

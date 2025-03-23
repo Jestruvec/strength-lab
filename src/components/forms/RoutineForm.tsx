@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import { trainDays } from "@/utils";
 import {
   CustomButton,
   FormField,
@@ -212,14 +213,7 @@ export const RoutineForm = ({
           }
           label="Dia de entrenamiento"
           required
-          options={[
-            { value: 0, label: "Seleccione un dia o deje sin asignar" },
-            { value: 1, label: "Día 1" },
-            { value: 2, label: "Día 2" },
-            { value: 3, label: "Día 3" },
-            { value: 4, label: "Día 4" },
-            { value: 5, label: "Día 5" },
-          ]}
+          options={trainDays}
         />
 
         <label className="text-sm font-medium">Seleccionar ejercicios</label>

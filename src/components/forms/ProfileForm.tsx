@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FormField,
   FormSelect,
@@ -9,23 +9,36 @@ import { useUserProfileCrud } from "@/hooks";
 import { avatars } from "@/utils";
 import { useAuthContext } from "@/context";
 import { UserProfile } from "@/types";
+import { FaArrowLeft } from "react-icons/fa";
 
 interface ProfileFormProps {
   onProfileSet: () => void;
+  onGoBack: () => void;
+  profileToEdit?: UserProfile;
 }
 
-export const ProfileForm = ({ onProfileSet }: ProfileFormProps) => {
+export const ProfileForm = ({
+  onProfileSet,
+  profileToEdit,
+  onGoBack,
+}: ProfileFormProps) => {
   const { user } = useAuthContext();
-  const { loading, error, postProfile } = useUserProfileCrud();
+  const { loading, error, postProfile, putProfile } = useUserProfileCrud();
   const [formData, setFormData] = useState<UserProfile>({
     id: user.id,
     username: "",
     avatar: "",
-    age: undefined,
-    height: undefined,
-    weight: undefined,
-    goal: undefined,
+    age: 0,
+    height: 0,
+    weight: 0,
+    goal: 0,
   });
+
+  useEffect(() => {
+    if (profileToEdit) {
+      setFormData(profileToEdit);
+    }
+  }, [profileToEdit]);
 
   const handleChange = (field: keyof UserProfile, value: string | number) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -45,7 +58,11 @@ export const ProfileForm = ({ onProfileSet }: ProfileFormProps) => {
       return;
     }
 
-    await postProfile(formData);
+    if (profileToEdit) {
+      await putProfile(formData.id, formData);
+    } else {
+      await postProfile(formData);
+    }
 
     onProfileSet();
   };
@@ -53,7 +70,19 @@ export const ProfileForm = ({ onProfileSet }: ProfileFormProps) => {
   return (
     <>
       <div>
-        <h1 className="text-2xl font-bold">Crear perfil de usuario</h1>
+        <div className="flex gap-2 items-center">
+          {profileToEdit && (
+            <button onClick={onGoBack}>
+              <FaArrowLeft />
+            </button>
+          )}
+
+          <h1 className="text-2xl font-bold">
+            {profileToEdit
+              ? "Editar perfil de usuario"
+              : "Crear perfil de usuario"}
+          </h1>
+        </div>
 
         <form onSubmit={handleSubmit} className="mt-2">
           <div className="flex flex-col gap-2">
