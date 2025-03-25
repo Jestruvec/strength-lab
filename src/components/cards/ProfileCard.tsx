@@ -1,6 +1,7 @@
 import { FaPencilAlt } from "react-icons/fa";
 import { UserAvatar } from "../avatar/UserAvatar";
 import { UserProfile } from "@/types";
+import { trainGoals } from "@/utils";
 
 interface ComponentProps {
   profile: UserProfile;
@@ -8,6 +9,10 @@ interface ComponentProps {
 }
 
 export const ProfileCard = ({ profile, onProfileEdit }: ComponentProps) => {
+  const getTrainGoalName = (goalValue: number) => {
+    return trainGoals.find((goal) => goal.value === goalValue).label;
+  };
+
   return (
     <div className="flex gap-4">
       <div className="w-48 h-48">
@@ -40,7 +45,9 @@ export const ProfileCard = ({ profile, onProfileEdit }: ComponentProps) => {
           </li>
           <li>
             <label className="text-sm">Objetivo: </label>
-            <span className="font-bold text-sm">{profile.goal}</span>
+            <span className="font-bold text-sm">
+              {getTrainGoalName(profile.goal)}
+            </span>
           </li>
         </ul>
       </div>

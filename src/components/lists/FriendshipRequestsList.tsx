@@ -40,7 +40,11 @@ export const FriendshipRequestList = () => {
   }, [friendshipRequests, user.id]);
 
   if (loading) {
-    return <>loading...</>;
+    return (
+      <div className="h-40 flex items-center justify-center text-xs">
+        loading...
+      </div>
+    );
   }
 
   if (error) {

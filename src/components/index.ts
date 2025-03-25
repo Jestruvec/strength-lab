@@ -22,6 +22,7 @@ import { TrainExerciseCard } from "./cards/TrainExerciseCard";
 import { FriendshipRequestCard } from "./cards/FriendshipRequestCard";
 import { PostCard } from "./cards/PostCard";
 import { ProfileCard } from "./cards/ProfileCard";
+import { ProfileCardSecondary } from "./cards/ProfileCardSecondary";
 
 import { Searchbar } from "./searchbar/Searchbar";
 
@@ -33,8 +34,11 @@ import { UserAvatar } from "./avatar/UserAvatar";
 import { FriendshipRequestList } from "./lists/FriendshipRequestsList";
 import { FriendshipSuggestList } from "./lists/FriendshipSuggestList";
 import { PostList } from "./lists/PostList";
+import { FriendshipsList } from "./lists/FriendshipsList";
 
 export {
+  ProfileCardSecondary,
+  FriendshipsList,
   ProfileCard,
   PostList,
   FriendshipSuggestList,

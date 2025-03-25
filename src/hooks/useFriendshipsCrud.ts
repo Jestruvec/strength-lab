@@ -15,7 +15,11 @@ export const useFriendshipsCrud = () => {
     setError(null);
 
     try {
-      const { data, error } = await supabase.from(TABLE_NAME).select("*");
+      const { data, error } = await supabase.from(TABLE_NAME).select(`
+        *,
+        from_user:user_profile!from (*),
+        to_user:user_profile!to (*)
+    `);
 
       if (error) {
         throw error;

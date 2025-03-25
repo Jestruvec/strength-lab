@@ -36,6 +36,7 @@ export default function App() {
             <Route path="home" element={<Home />} />
             <Route path="settings" element={<Settings />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="profile/:profileId" element={<Profile />} />
             <Route path="train" element={<Train />} />
             <Route path="routines" element={<Routines />} />
           </Route>

@@ -6,7 +6,7 @@ import {
   ErrorMessage,
 } from "@/components";
 import { useUserProfileCrud } from "@/hooks";
-import { avatars } from "@/utils";
+import { avatars, trainGoals } from "@/utils";
 import { useAuthContext } from "@/context";
 import { UserProfile } from "@/types";
 import { FaArrowLeft } from "react-icons/fa";
@@ -150,12 +150,7 @@ export const ProfileForm = ({
               setValue={(value) => handleChange("goal", value)}
               label="Objetivo"
               required
-              options={[
-                { value: 0, label: "Seleccionar objetivo" },
-                { value: 1, label: "Aumentar masa muscular" },
-                { value: 2, label: "Disminuir grasa corporal" },
-                { value: 3, label: "Aumentar condición física" },
-              ]}
+              options={trainGoals}
             />
 
             {error && <ErrorMessage message={error} />}

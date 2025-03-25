@@ -59,18 +59,15 @@ const Sidebar = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
         <ul>
           {navItems.map((item, index) => {
             return (
-              <li
-                key={index}
-                className="mb-2 p-2 hover:bg-gray-600 cursor-pointer"
-              >
-                <Link
-                  to={item.url}
-                  className="hover:text-gray-300 flex items-center gap-2"
+              <Link to={item.url} className="w-100">
+                <li
+                  key={index}
+                  className="hover:bg-gray-600 p-3 cursor-pointer flex gap-2 items-center"
                 >
                   {item.icon}
-                  {item.label}
-                </Link>
-              </li>
+                  <span>{item.label}</span>
+                </li>
+              </Link>
             );
           })}
         </ul>
