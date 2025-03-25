@@ -6,6 +6,7 @@ import { useAuthContext } from "@/context";
 import { UserAvatar } from "../avatar/UserAvatar";
 import { FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { EmptySection } from "../EmptySection/EmptySection";
 
 interface UserProfileExtended extends UserProfile {
   friendshipId: string;
@@ -53,31 +54,37 @@ export const FriendshipsList = () => {
     <>
       <h1 className="text-2xl font-bold mb-4">Lista de amigos</h1>
 
-      <ul>
-        {friendUserProfiles.map((friend) => {
-          return (
-            <Link to={`/profile/${friend.id}`} className="w-100">
-              <li className="cursor-pointer hover:bg-gray-200 p-1">
-                <div className="flex justify-between items-center">
-                  <div className="flex gap-2 items-center">
-                    <UserAvatar userProfile={friend} />
-                    <h3>{friend.username}</h3>
-                  </div>
+      {friendUserProfiles.length ? (
+        <ul>
+          {friendUserProfiles.map((friend) => {
+            return (
+              <Link to={`/profile/${friend.id}`} className="w-100">
+                <li className="cursor-pointer hover:bg-gray-200 p-1">
+                  <div className="flex justify-between items-center">
+                    <div className="flex gap-2 items-center">
+                      <UserAvatar userProfile={friend} />
+                      <h3>{friend.username}</h3>
+                    </div>
 
-                  <button
-                    className="cursor-pointer hover:opacity-50"
-                    onClick={(event) =>
-                      handleDeleteFriendship(event, friend.friendshipId)
-                    }
-                  >
-                    <FaTrash className="text-red-500" />
-                  </button>
-                </div>
-              </li>
-            </Link>
-          );
-        })}
-      </ul>
+                    <button
+                      className="cursor-pointer hover:opacity-50"
+                      onClick={(event) =>
+                        handleDeleteFriendship(event, friend.friendshipId)
+                      }
+                    >
+                      <FaTrash className="text-red-500" />
+                    </button>
+                  </div>
+                </li>
+              </Link>
+            );
+          })}
+        </ul>
+      ) : (
+        <div className="h-40 flex justify-center items-center">
+          <EmptySection />
+        </div>
+      )}
     </>
   );
 };

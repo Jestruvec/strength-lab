@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Routine } from "@/types";
 import { FaArrowUp, FaArrowDown, FaArrowsAltV, FaTrash } from "react-icons/fa";
-import { FormField } from "@/components";
+import { EmptySection, FormField } from "@/components";
 
 interface RoutinesTableProps {
   routines: Routine[];
@@ -197,7 +197,7 @@ export const RoutinesTable = ({
           {!routines.length && (
             <tr>
               <td colSpan={8} className="text-center p-10">
-                No hay registros
+                <EmptySection />
               </td>
             </tr>
           )}

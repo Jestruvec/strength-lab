@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useRoutinesCrud } from "@/hooks";
-import { FormSelect, TrainExerciseCard } from "@/components";
+import { EmptySection, FormSelect, TrainExerciseCard } from "@/components";
 import { trainDays } from "@/utils";
 
 export const Train = () => {
@@ -38,8 +38,8 @@ export const Train = () => {
         </div>
 
         {!filteredItems.length && (
-          <div className="flex justify-center">
-            <span>No hay rutina asignada para este dia</span>
+          <div className="flex justify-center h-40 items-center">
+            <EmptySection />
           </div>
         )}
 
