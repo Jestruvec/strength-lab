@@ -58,7 +58,11 @@ export const FriendshipsList = () => {
         <ul>
           {friendUserProfiles.map((friend) => {
             return (
-              <Link to={`/profile/${friend.id}`} className="w-100">
+              <Link
+                key={friend.id}
+                to={`/profile/${friend.id}`}
+                className="w-100"
+              >
                 <li className="cursor-pointer hover:bg-gray-200 p-1">
                   <div className="flex justify-between items-center">
                     <div className="flex gap-2 items-center">
