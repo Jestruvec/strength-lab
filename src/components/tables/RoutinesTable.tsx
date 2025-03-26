@@ -165,7 +165,7 @@ export const RoutinesTable = ({
         <thead>
           <tr className="border-b">
             <th className="p-2">
-              <div className="flex gap-2">
+              <div className="flex justify-center gap-2">
                 {selectedRowIds.length ? (
                   <FaTrash
                     color="red"
@@ -191,7 +191,7 @@ export const RoutinesTable = ({
                   className="p-2"
                   onClick={() => handleSort(header.param)}
                 >
-                  <div className="flex gap-2">
+                  <div className="flex justify-center gap-2">
                     <span className="text-sm">{header.label}</span>
                     {getSortIcon(header.param)}
                   </div>
