@@ -11,7 +11,6 @@ import {
   FaBook,
 } from "react-icons/fa";
 import { FriendshipRequestMenu } from "../menus/FriendshipRequestMenu";
-import { Searchbar } from "../searchbar/Searchbar";
 
 const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   const navigate = useNavigate();
@@ -27,8 +26,6 @@ const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
       <button onClick={toggleSidebar} className="cursor-pointer">
         <FaBars className="h-4 w-4 " />
       </button>
-
-      <Searchbar placeholder="Buscar usuarios" />
 
       <div className="flex gap-8">
         <FriendshipRequestMenu />
