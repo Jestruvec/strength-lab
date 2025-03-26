@@ -1,29 +1,26 @@
-import { UserProfile } from "@/types";
+import { FriendshipRequest, UserProfile } from "@/types";
 import { FaUser } from "react-icons/fa";
-import { useState } from "react";
 import { UserAvatar, CustomButton } from "@/components";
 
 interface ComponentProps {
+  friendshipRequest?: FriendshipRequest;
   userProfile: UserProfile;
   onRequestSent: (to: string) => void;
-  onRequestDelete: () => void;
+  onRequestDelete: (requestId: string) => void;
 }
 
-export const FriendshipRequestCard = ({
+export const FriendshipSuggestionCard = ({
+  friendshipRequest,
   userProfile,
   onRequestSent,
   onRequestDelete,
 }: ComponentProps) => {
-  const [requestSent, setRequestSent] = useState(false);
-
   const sendRequest = () => {
     onRequestSent(userProfile.id);
-    setRequestSent(true);
   };
 
   const deleteRequest = () => {
-    onRequestDelete();
-    setRequestSent(false);
+    onRequestDelete(friendshipRequest.id);
   };
 
   return (
@@ -43,10 +40,10 @@ export const FriendshipRequestCard = ({
       <div className="flex justify-between flex-col flex-1 h-full">
         <span className="text-sm font-bold">{userProfile.username}</span>
         <CustomButton
-          label={requestSent ? "Cancelar" : "Agregar"}
+          label={friendshipRequest ? "Eliminar" : "Agregar"}
           size="sm"
-          color={requestSent ? "danger" : "info"}
-          onClick={requestSent ? deleteRequest : sendRequest}
+          color={friendshipRequest ? "danger" : "info"}
+          onClick={friendshipRequest ? deleteRequest : sendRequest}
         />
       </div>
     </div>

@@ -19,7 +19,7 @@ import { RoutineForm } from "./forms/RoutineForm";
 import { PostForm } from "./forms/PostForm";
 
 import { TrainExerciseCard } from "./cards/TrainExerciseCard";
-import { FriendshipRequestCard } from "./cards/FriendshipRequestCard";
+import { FriendshipSuggestionCard } from "./cards/FriendshipSuggestionCard";
 import { PostCard } from "./cards/PostCard";
 import { ProfileCard } from "./cards/ProfileCard";
 import { ProfileCardSecondary } from "./cards/ProfileCardSecondary";
@@ -48,7 +48,7 @@ export {
   PostCard,
   UserAvatar,
   PostForm,
-  FriendshipRequestCard,
+  FriendshipSuggestionCard,
   Searchbar,
   TrainExerciseCard,
   EmptySection,

@@ -1,5 +1,5 @@
 import { useMemo, useEffect, useState } from "react";
-import { FriendshipRequestCard } from "../cards/FriendshipRequestCard";
+import { FriendshipSuggestionCard } from "../cards/FriendshipSuggestionCard";
 import {
   useFriendshipRequestsCrud,
   useFriendshipsCrud,
@@ -22,7 +22,7 @@ export const FriendshipSuggestList = () => {
     deleteFriendshipRequest,
   } = useFriendshipRequestsCrud();
 
-  const [requestSent, setRequestSent] = useState<Record<number, string>>({});
+  const [requestsSent, setRequestsSent] = useState<FriendshipRequest[]>([]);
 
   useEffect(() => {
     fetchProfiles();
@@ -48,25 +48,23 @@ export const FriendshipSuggestList = () => {
     });
   }, [profiles, friendshipRequests, friendships, user.id]);
 
-  const handlePostRequest = async (to: string, idx: number) => {
+  const handlePostRequest = async (to: string) => {
     const data = {
       from: user.id,
       to,
     } as FriendshipRequest;
 
     const request = await postFriendshipRequest(data);
-    setRequestSent({ ...requestSent, [idx]: request.id });
+    setRequestsSent([...requestsSent, request]);
   };
 
-  const handleDeleteRequest = async (index: number) => {
-    const requestId = requestSent[index];
-    await deleteFriendshipRequest(requestId);
+  const handleDeleteRequest = (requestId: string) => {
+    deleteFriendshipRequest(requestId);
+  };
 
-    setRequestSent((prev) => {
-      const newState = { ...prev };
-      delete newState[0];
-      return newState;
-    });
+  const getRequest = (profileId: string) => {
+    const request = requestsSent.find((request) => request.to === profileId);
+    return request;
   };
 
   if (loading) {
@@ -82,12 +80,13 @@ export const FriendshipSuggestList = () => {
       <h1 className="text-2xl font-bold">Agregar amigos</h1>
 
       <div className="flex items-center gap-2 mb-3 py-4 overflow-x-auto overflow-y-hidden">
-        {nonFriendProfiles.map((profile, idx) => (
-          <FriendshipRequestCard
+        {nonFriendProfiles.map((profile) => (
+          <FriendshipSuggestionCard
             key={profile.id}
             userProfile={profile}
-            onRequestSent={(to: string) => handlePostRequest(to, idx)}
-            onRequestDelete={() => handleDeleteRequest(idx)}
+            friendshipRequest={getRequest(profile.id)}
+            onRequestSent={handlePostRequest}
+            onRequestDelete={handleDeleteRequest}
           />
         ))}
       </div>
