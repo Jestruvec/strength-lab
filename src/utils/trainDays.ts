@@ -1,4 +1,5 @@
 export const trainDays = [
+  { value: 0, label: "Sin asignar" },
   { value: 1, label: "Lunes" },
   { value: 2, label: "Martes" },
   { value: 3, label: "Miercoles" },

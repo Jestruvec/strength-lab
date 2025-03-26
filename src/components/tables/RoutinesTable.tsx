@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { Routine } from "@/types";
 import { FaArrowUp, FaArrowDown, FaArrowsAltV, FaTrash } from "react-icons/fa";
 import { EmptySection, FormField } from "@/components";
+import { trainDays } from "@/utils";
 
 interface RoutinesTableProps {
   routines: Routine[];
@@ -88,6 +89,12 @@ export const RoutinesTable = ({
         return acc;
       },
       { exercises: 0, sets: 0, reps: 0, duration: 0, muscles: [] }
+    );
+  };
+
+  const getDay = (routineDay: number) => {
+    return (
+      trainDays.find((day) => day.value === routineDay)?.label || "Sin asignar"
     );
   };
 
@@ -220,7 +227,7 @@ export const RoutinesTable = ({
                   />
                 </td>
                 <td className="text-center">{routine.name}</td>
-                <td className="text-center">{routine.day || "Sin asignar"}</td>
+                <td className="text-center">{getDay(routine.day)}</td>
                 <td className="text-center">
                   {getRoutineData(routine).muscles}
                 </td>
