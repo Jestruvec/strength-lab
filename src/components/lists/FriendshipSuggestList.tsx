@@ -58,8 +58,9 @@ export const FriendshipSuggestList = () => {
     setRequestsSent([...requestsSent, request]);
   };
 
-  const handleDeleteRequest = (requestId: string) => {
-    deleteFriendshipRequest(requestId);
+  const handleDeleteRequest = async (requestId: string) => {
+    await deleteFriendshipRequest(requestId);
+    setRequestsSent((oldValue) => oldValue.filter((e) => e.id !== requestId));
   };
 
   const getRequest = (profileId: string) => {
@@ -68,7 +69,7 @@ export const FriendshipSuggestList = () => {
   };
 
   if (loading) {
-    return <>loading...</>;
+    return <div className="h-40">loading...</div>;
   }
 
   if (error) {
@@ -76,7 +77,7 @@ export const FriendshipSuggestList = () => {
   }
 
   return (
-    <>
+    <div className="h-40">
       <h1 className="text-2xl font-bold">Agregar amigos</h1>
 
       <div className="flex items-center gap-2 mb-3 py-4 overflow-x-auto overflow-y-hidden">
@@ -90,6 +91,6 @@ export const FriendshipSuggestList = () => {
           />
         ))}
       </div>
-    </>
+    </div>
   );
 };
