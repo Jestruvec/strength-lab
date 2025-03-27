@@ -1,12 +1,11 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Routine } from "@/types";
 import { FaArrowUp, FaArrowDown, FaArrowsAltV, FaTrash } from "react-icons/fa";
-import { EmptySection, FormField } from "@/components";
+import { EmptySection, ErrorMessage, FormField } from "@/components";
 import { trainDays } from "@/utils";
+import { useRoutinesCrud } from "@/hooks";
 
 interface RoutinesTableProps {
-  routines: Routine[];
-  deleteRoutine: (id: string) => Promise<void>;
   onRowClick: (params: Routine) => void;
 }
 
@@ -24,11 +23,9 @@ interface Header {
   param: SortParam;
 }
 
-export const RoutinesTable = ({
-  routines,
-  deleteRoutine,
-  onRowClick,
-}: RoutinesTableProps) => {
+export const RoutinesTable = ({ onRowClick }: RoutinesTableProps) => {
+  const { loading, error, routines, fetchRoutines, deleteRoutine } =
+    useRoutinesCrud();
   const [isDescending, setIsDescending] = useState(false);
   const [sortParam, setSortParam] = useState("name");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -46,6 +43,10 @@ export const RoutinesTable = ({
     { label: "Reps", param: "reps" },
     { label: "Cardio", param: "duration" },
   ];
+
+  useEffect(() => {
+    fetchRoutines();
+  }, [fetchRoutines]);
 
   const toggleRowSelection = (routineId: string) => {
     if (selectedRowIds.includes(routineId)) {
@@ -69,8 +70,12 @@ export const RoutinesTable = ({
     console.log(selectAll);
   };
 
-  const deleteAll = () => {
-    routines.forEach((routine) => deleteRoutine(routine.id));
+  const deleteSelectedRoutines = async () => {
+    const promises = selectedRowIds.map((id) => deleteRoutine(id));
+    await Promise.all(promises);
+
+    setSelectedRowIds([]);
+    fetchRoutines();
   };
 
   const getRoutineData = (routine: Routine) => {
@@ -80,11 +85,11 @@ export const RoutinesTable = ({
         acc.sets += item.sets;
         acc.reps += item.sets * item.reps;
         acc.duration += item.duration;
-        const muscles = item.exercises.exercise_muscles.map(
-          (e) => e.muscles.name
-        );
+        // const muscles = item.exercises.exercise_muscles.map(
+        //   (e) => e.muscles.name
+        // );
 
-        muscles.forEach((e) => !acc.muscles.includes(e) && acc.muscles.push(e));
+        // muscles.forEach((e) => !acc.muscles.includes(e) && acc.muscles.push(e));
 
         return acc;
       },
@@ -151,6 +156,14 @@ export const RoutinesTable = ({
       });
   }, [routines, searchQuery, sortParam, isDescending]);
 
+  if (loading) {
+    return <>loading</>;
+  }
+
+  if (error) {
+    return <ErrorMessage message={error} />;
+  }
+
   return (
     <>
       <FormField
@@ -170,7 +183,7 @@ export const RoutinesTable = ({
                   <FaTrash
                     color="red"
                     className="cursor-pointer hover:opacity-50"
-                    onClick={deleteAll}
+                    onClick={deleteSelectedRoutines}
                   />
                 ) : (
                   <></>
@@ -226,17 +239,21 @@ export const RoutinesTable = ({
                     onClick={(event) => event.stopPropagation()}
                   />
                 </td>
-                <td className="text-center">{routine.name}</td>
-                <td className="text-center">{getDay(routine.day)}</td>
-                {/* <td className="text-center">
+                <td className="text-center text-sm">{routine.name}</td>
+                <td className="text-center text-sm">{getDay(routine.day)}</td>
+                {/* <td className="text-center text-sm">
                   {getRoutineData(routine).muscles}
                 </td> */}
-                <td className="text-center">
+                <td className="text-center text-sm">
                   {getRoutineData(routine).exercises}
                 </td>
-                <td className="text-center">{getRoutineData(routine).sets}</td>
-                <td className="text-center">{getRoutineData(routine).reps}</td>
-                <td className="text-center">
+                <td className="text-center text-sm">
+                  {getRoutineData(routine).sets}
+                </td>
+                <td className="text-center text-sm">
+                  {getRoutineData(routine).reps}
+                </td>
+                <td className="text-center text-sm">
                   {getRoutineData(routine).duration}
                 </td>
               </tr>

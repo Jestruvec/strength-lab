@@ -107,7 +107,7 @@ export const useRoutinesCrud = () => {
     }
   };
 
-  const DeleteRoutine = async (id: string) => {
+  const deleteRoutine = async (id: string) => {
     setLoading(true);
     setError(null);
 
@@ -134,6 +134,6 @@ export const useRoutinesCrud = () => {
     fetchRoutineById,
     PostRoutine,
     PutRoutine,
-    DeleteRoutine,
+    deleteRoutine,
   };
 };
