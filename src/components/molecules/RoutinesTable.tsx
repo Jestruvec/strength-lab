@@ -40,7 +40,7 @@ export const RoutinesTable = ({
   const headers: Header[] = [
     { label: "Nombre", param: "name" },
     { label: "Dia", param: "day" },
-    { label: "Musculos", param: "muscles" },
+    // { label: "Musculos", param: "muscles" },
     { label: "Ejercicios", param: "exercises" },
     { label: "Series", param: "sets" },
     { label: "Reps", param: "reps" },
@@ -228,9 +228,9 @@ export const RoutinesTable = ({
                 </td>
                 <td className="text-center">{routine.name}</td>
                 <td className="text-center">{getDay(routine.day)}</td>
-                <td className="text-center">
+                {/* <td className="text-center">
                   {getRoutineData(routine).muscles}
-                </td>
+                </td> */}
                 <td className="text-center">
                   {getRoutineData(routine).exercises}
                 </td>
