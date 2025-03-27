@@ -20,6 +20,7 @@ export const Routines = () => {
 
   const toggleIsCreatingRoutine = () => {
     setIsCreatingRoutine((oldValue) => !oldValue);
+    setRoutineToEdit(null);
     fetchRoutines();
   };
 
