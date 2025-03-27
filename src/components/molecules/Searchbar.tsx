@@ -1,20 +1,22 @@
-import { useState } from "react";
-import { FormField } from "../atoms/FormField";
-
 interface ComponentProps {
+  value: string;
+  setValue: (newwValue: string) => void;
   placeholder?: string;
 }
 
-export const Searchbar = ({ placeholder = "Buscar" }: ComponentProps) => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
-
+export const Searchbar = ({
+  placeholder = "Buscar",
+  value,
+  setValue,
+}: ComponentProps) => {
   return (
-    <FormField
+    <input
+      className="p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-300"
       id="searchbar"
       placeholder={placeholder}
       type="text"
-      value={searchQuery}
-      setValue={setSearchQuery}
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
     />
   );
 };

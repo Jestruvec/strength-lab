@@ -3,8 +3,11 @@ import { trainDays } from "@/utils";
 import {
   CustomButton,
   FormField,
-  EmptySection,
   FormSelect,
+  Searchbar,
+  RoutineExercisesTable,
+  ExercisesList,
+  MusclesChips,
 } from "@/components";
 import {
   useExercisesCrud,
@@ -23,13 +26,17 @@ export const RoutineForm = ({
   routineToEdit?: Routine;
 }) => {
   const { user } = useAuthContext();
-  const { fetchMuscles } = useMusclesCrud();
+  const { fetchMuscles, muscles, loading: loadingMuscles } = useMusclesCrud();
   const { exercises, fetchExercises } = useExercisesCrud();
   const { PostRoutine, PutRoutine } = useRoutinesCrud();
-  const { PostRoutineExercise, PutRoutineExercise, DeleteRoutineExercise } =
-    useRoutineExercisesCrud();
+  const {
+    PostRoutineExercise,
+    PutRoutineExercise,
+    DeleteRoutineExercise,
+    loading,
+  } = useRoutineExercisesCrud();
 
-  const [selectedMusclesIds] = useState<string[]>([]);
+  const [selectedMusclesIds, setSelectedMusclesIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const [routineData, setRoutineData] = useState<Routine>({
@@ -133,15 +140,15 @@ export const RoutineForm = ({
     onRoutineSet();
   };
 
-  // const toggleMuscleSelection = (muscleId: string) => {
-  //   if (selectedMusclesIds.includes(muscleId)) {
-  //     setSelectedMusclesIds((value) => {
-  //       return value.filter((id) => id !== muscleId);
-  //     });
-  //   } else {
-  //     setSelectedMusclesIds((value) => [...value, muscleId]);
-  //   }
-  // };
+  const toggleMuscleSelection = (muscleId: string) => {
+    if (selectedMusclesIds.includes(muscleId)) {
+      setSelectedMusclesIds((value) => {
+        return value.filter((id) => id !== muscleId);
+      });
+    } else {
+      setSelectedMusclesIds((value) => [...value, muscleId]);
+    }
+  };
 
   const addRoutineExercise = (exercise: Exercise) => {
     const routineExercise: RoutineExercise = {
@@ -166,10 +173,6 @@ export const RoutineForm = ({
     );
   };
 
-  const getExerciseName = (exerciseId: string) => {
-    return exercises.find((exercise) => exercise.id === exerciseId)?.name;
-  };
-
   const setRoutineExerciseData = (
     event: React.ChangeEvent<HTMLInputElement>,
     exerciseId: string,
@@ -184,6 +187,13 @@ export const RoutineForm = ({
     );
   };
 
+  const handleInputChange = (field: string, newValue: string | number) => {
+    setRoutineData((prevRoutine) => ({
+      ...prevRoutine,
+      [field]: newValue,
+    }));
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex flex-col gap-2">
@@ -193,24 +203,14 @@ export const RoutineForm = ({
           placeholder="Nombre"
           type="text"
           value={routineData.name}
-          setValue={(newValue: string) =>
-            setRoutineData((prevRoutine) => ({
-              ...prevRoutine,
-              name: newValue,
-            }))
-          }
+          setValue={(newValue) => handleInputChange("name", newValue)}
           required
         />
 
         <FormSelect
           id="day"
           value={routineData.day}
-          setValue={(newValue: string) =>
-            setRoutineData((prevRoutine) => ({
-              ...prevRoutine,
-              day: Number(newValue),
-            }))
-          }
+          setValue={(newValue) => handleInputChange("day", Number(newValue))}
           label="Dia de entrenamiento"
           required
           options={trainDays}
@@ -218,175 +218,33 @@ export const RoutineForm = ({
 
         <label className="text-sm font-medium">Seleccionar ejercicios</label>
 
-        {/* <div className="flex gap-1">
-          {muscles.map((muscle) => {
-            return (
-              <div
-                className={`${
-                  selectedMusclesIds.includes(muscle.id) && "bg-gray-300"
-                } border border-gray-400 cursor-pointer hover:bg-gray-200 rounded-md flex-1 overflow-hidden h-10`}
-                key={muscle.id}
-                onClick={() => toggleMuscleSelection(muscle.id)}
-              >
-                <span className="text-xs">{muscle.name}</span>
-              </div>
-            );
-          })}
-        </div> */}
-
-        <FormField
-          id="searchbar"
-          placeholder="Buscar"
-          type="text"
-          value={searchQuery}
-          setValue={setSearchQuery}
+        <MusclesChips
+          loading={loadingMuscles}
+          muscles={muscles}
+          selectedMusclesIds={selectedMusclesIds}
+          toggleMuscleSelection={toggleMuscleSelection}
         />
 
-        <div className="rounded-md border border-gray-400 shadow-md h-40 overflow-auto">
-          {filteredExercises.length ? (
-            filteredExercises.map((exercise) => {
-              return (
-                <div
-                  key={exercise.id}
-                  className="cursor-pointer hover:bg-gray-200 border-b border-gray-400 flex items-center gap-2"
-                  onClick={() => addRoutineExercise(exercise)}
-                >
-                  <img
-                    className="w-20 h-20"
-                    src={exercise.imgUrl}
-                    alt={exercise.name}
-                  />
-                  <span className="text-sm">{exercise.name}</span>
-                </div>
-              );
-            })
-          ) : (
-            <EmptySection
-              message={
-                selectedMusclesIds.length
-                  ? "No se encontraron resultados de busqueda"
-                  : "Seleccione uno o mas musculos"
-              }
-            />
-          )}
-        </div>
+        <Searchbar value={searchQuery} setValue={setSearchQuery} />
+
+        <ExercisesList
+          addRoutineExercise={addRoutineExercise}
+          filteredExercises={filteredExercises}
+          selectedMusclesIds={selectedMusclesIds}
+        />
 
         <label className="text-sm font-medium">Ejercicios seleccionados</label>
 
         <div className="rounded-md border  border-gray-400 shadow-md h-40 overflow-y-auto overflow-x-hidden">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-400">
-                <th>
-                  <span className="text-xs">Nombre</span>
-                </th>
-                <th>
-                  <span className="text-xs">Series</span>
-                </th>
-                <th>
-                  <span className="text-xs">Repeticiones</span>
-                </th>
-                <th>
-                  <span className="text-xs">Duracion</span>
-                </th>
-                <th>
-                  <span className="text-xs">Detalles</span>
-                </th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {routineExercisesData.length ? (
-                routineExercisesData.map(
-                  ({ id, exerciseId, sets, reps, duration, details }) => {
-                    return (
-                      <tr key={id}>
-                        <td>
-                          <div className="flex justify-center">
-                            <span className="text-xs">
-                              {getExerciseName(exerciseId)}
-                            </span>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="flex justify-center">
-                            <input
-                              name="sets"
-                              type="number"
-                              className="border-b w-10 text-sm"
-                              value={sets}
-                              onChange={(e) =>
-                                setRoutineExerciseData(e, id, "sets")
-                              }
-                            />
-                          </div>
-                        </td>
-                        <td>
-                          <div className="flex justify-center">
-                            <input
-                              name="reps"
-                              type="number"
-                              className="border-b w-10 text-sm"
-                              value={reps}
-                              onChange={(e) =>
-                                setRoutineExerciseData(e, id, "reps")
-                              }
-                            />
-                          </div>
-                        </td>
-                        <td>
-                          <div className="flex justify-center">
-                            <input
-                              name="duration"
-                              type="number"
-                              className="border-b w-10 text-sm"
-                              value={duration}
-                              onChange={(e) =>
-                                setRoutineExerciseData(e, id, "duration")
-                              }
-                            />
-                          </div>
-                        </td>
-                        <td>
-                          <div className="flex justify-center">
-                            <input
-                              name="details"
-                              className="border-b w-10 text-sm"
-                              value={details}
-                              onChange={(e) =>
-                                setRoutineExerciseData(e, id, "details")
-                              }
-                            />
-                          </div>
-                        </td>
-                        <td>
-                          <div className="flex justify-center">
-                            <span
-                              className="text-red-500"
-                              onClick={() => deleteRoutineExercise(id)}
-                            >
-                              X
-                            </span>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  }
-                )
-              ) : (
-                <tr>
-                  <td colSpan={5}>
-                    <div className="h-10">
-                      <EmptySection message="Seleccione 1 o mas ejercicios" />
-                    </div>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+          <RoutineExercisesTable
+            exercises={exercises}
+            routineExercisesData={routineExercisesData}
+            setRoutineExerciseData={setRoutineExerciseData}
+            deleteRoutineExercise={deleteRoutineExercise}
+          />
         </div>
 
-        <CustomButton type="submit" />
+        <CustomButton type="submit" disabled={loading} />
       </div>
     </form>
   );

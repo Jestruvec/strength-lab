@@ -1,11 +1,12 @@
 import { useState, useMemo, useEffect } from "react";
 import { Routine } from "@/types";
 import { FaArrowUp, FaArrowDown, FaArrowsAltV, FaTrash } from "react-icons/fa";
-import { EmptySection, ErrorMessage, FormField } from "@/components";
+import { EmptySection, ErrorMessage } from "@/components";
 import { trainDays } from "@/utils";
 import { useRoutinesCrud } from "@/hooks";
 
 interface RoutinesTableProps {
+  searchQuery: string;
   onRowClick: (params: Routine) => void;
 }
 
@@ -23,12 +24,14 @@ interface Header {
   param: SortParam;
 }
 
-export const RoutinesTable = ({ onRowClick }: RoutinesTableProps) => {
+export const RoutinesTable = ({
+  onRowClick,
+  searchQuery,
+}: RoutinesTableProps) => {
   const { loading, error, routines, fetchRoutines, deleteRoutine } =
     useRoutinesCrud();
   const [isDescending, setIsDescending] = useState(false);
   const [sortParam, setSortParam] = useState("name");
-  const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const isAllSelected =
@@ -165,102 +168,92 @@ export const RoutinesTable = ({ onRowClick }: RoutinesTableProps) => {
   }
 
   return (
-    <>
-      <FormField
-        id="searchbar"
-        placeholder="Buscar"
-        type="text"
-        value={searchQuery}
-        setValue={setSearchQuery}
-      />
-
-      <table className="mt-2">
-        <thead>
-          <tr className="border-b">
-            <th className="p-2">
-              <div className="flex justify-center gap-2">
-                {selectedRowIds.length ? (
-                  <FaTrash
-                    color="red"
-                    className="cursor-pointer hover:opacity-50"
-                    onClick={deleteSelectedRoutines}
-                  />
-                ) : (
-                  <></>
-                )}
-
-                <input
-                  type="checkbox"
-                  checked={isAllSelected}
-                  onChange={toggleSelectAll}
+    <table className="mt-2">
+      <thead>
+        <tr className="border-b">
+          <th className="p-2">
+            <div className="flex justify-center gap-2">
+              {selectedRowIds.length ? (
+                <FaTrash
+                  color="red"
+                  className="cursor-pointer hover:opacity-50"
+                  onClick={deleteSelectedRoutines}
                 />
-              </div>
-            </th>
+              ) : (
+                <></>
+              )}
 
-            {headers.map((header) => {
-              return (
-                <th
-                  key={header.param}
-                  className="p-2"
-                  onClick={() => handleSort(header.param)}
-                >
-                  <div className="flex justify-center gap-2">
-                    <span className="text-sm">{header.label}</span>
-                    {getSortIcon(header.param)}
-                  </div>
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {!routines.length && (
-            <tr>
-              <td colSpan={8} className="text-center p-10">
-                <EmptySection />
-              </td>
-            </tr>
-          )}
+              <input
+                type="checkbox"
+                checked={isAllSelected}
+                onChange={toggleSelectAll}
+              />
+            </div>
+          </th>
 
-          {filteredRoutines.map((routine) => {
+          {headers.map((header) => {
             return (
-              <tr
-                key={routine.id}
-                className="h-10 hover:bg-gray-200 cursor-pointer"
-                onClick={() => {
-                  onRowClick(routine);
-                }}
+              <th
+                key={header.param}
+                className="p-2"
+                onClick={() => handleSort(header.param)}
               >
-                <td className="text-center">
-                  <input
-                    type="checkbox"
-                    checked={selectedRowIds.includes(routine.id)}
-                    onChange={() => toggleRowSelection(routine.id)}
-                    onClick={(event) => event.stopPropagation()}
-                  />
-                </td>
-                <td className="text-center text-sm">{routine.name}</td>
-                <td className="text-center text-sm">{getDay(routine.day)}</td>
-                {/* <td className="text-center text-sm">
-                  {getRoutineData(routine).muscles}
-                </td> */}
-                <td className="text-center text-sm">
-                  {getRoutineData(routine).exercises}
-                </td>
-                <td className="text-center text-sm">
-                  {getRoutineData(routine).sets}
-                </td>
-                <td className="text-center text-sm">
-                  {getRoutineData(routine).reps}
-                </td>
-                <td className="text-center text-sm">
-                  {getRoutineData(routine).duration}
-                </td>
-              </tr>
+                <div className="flex justify-center gap-2">
+                  <span className="text-sm">{header.label}</span>
+                  {getSortIcon(header.param)}
+                </div>
+              </th>
             );
           })}
-        </tbody>
-      </table>
-    </>
+        </tr>
+      </thead>
+      <tbody>
+        {!routines.length && (
+          <tr>
+            <td colSpan={8} className="text-center p-10">
+              <EmptySection />
+            </td>
+          </tr>
+        )}
+
+        {filteredRoutines.map((routine) => {
+          return (
+            <tr
+              key={routine.id}
+              className="h-10 hover:bg-gray-200 cursor-pointer"
+              onClick={() => {
+                onRowClick(routine);
+              }}
+            >
+              <td className="text-center">
+                <input
+                  type="checkbox"
+                  checked={selectedRowIds.includes(routine.id)}
+                  onChange={() => toggleRowSelection(routine.id)}
+                  onClick={(event) => event.stopPropagation()}
+                />
+              </td>
+              <td className="text-center text-sm">{routine.name}</td>
+              <td className="text-center text-sm">{getDay(routine.day)}</td>
+              {/* <td className="text-center text-sm">
+                  {getRoutineData(routine).muscles}
+                </td> */}
+              <td className="text-center text-sm">
+                {getRoutineData(routine).exercises}
+              </td>
+              <td className="text-center text-sm">
+                {getRoutineData(routine).sets}
+              </td>
+              <td className="text-center text-sm">
+                {getRoutineData(routine).reps}
+              </td>
+              <td className="text-center text-sm">
+                {getRoutineData(routine).duration}
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 };

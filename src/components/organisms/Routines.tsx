@@ -1,10 +1,16 @@
 import { useState } from "react";
-import { CustomButton, RoutinesTable, RoutineForm } from "@/components";
+import {
+  CustomButton,
+  RoutinesTable,
+  RoutineForm,
+  Searchbar,
+} from "@/components";
 import { Routine } from "@/types";
 
 export const Routines = () => {
   const [showForm, setShowForm] = useState(false);
   const [routineToEdit, setRoutineToEdit] = useState<Routine | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const closeForm = () => {
     setShowForm(false);
@@ -39,7 +45,10 @@ export const Routines = () => {
       {showForm ? (
         <RoutineForm onRoutineSet={closeForm} routineToEdit={routineToEdit} />
       ) : (
-        <RoutinesTable onRowClick={openForm} />
+        <>
+          <Searchbar value={searchQuery} setValue={setSearchQuery} />
+          <RoutinesTable onRowClick={openForm} searchQuery={searchQuery} />
+        </>
       )}
     </div>
   );

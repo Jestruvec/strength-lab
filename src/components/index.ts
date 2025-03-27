@@ -5,11 +5,13 @@ import { ErrorMessage } from "./atoms/ErrorMessage";
 import { EmptySection } from "./atoms/EmptySection";
 import { UserAvatar } from "./atoms/UserAvatar";
 import { NotFound } from "./atoms/NotFound";
+import { CustomChip } from "./atoms/CustomChip";
 
 import { LoginForm } from "./molecules/LoginForm";
 import { RegisterForm } from "./molecules/RegisterForm";
 import { SocialLoginButtons } from "./molecules/SocialLoginButtons";
 import { RoutinesTable } from "./molecules/RoutinesTable";
+import { RoutineExercisesTable } from "./molecules/RoutineExercisesTable";
 import { ProfileForm } from "./molecules/ProfileForm";
 import { RoutineForm } from "./molecules/RoutineForm";
 import { PostForm } from "./molecules/PostForm";
@@ -25,6 +27,8 @@ import { FriendshipRequestList } from "./molecules/FriendshipRequestsList";
 import { FriendshipSuggestList } from "./molecules/FriendshipSuggestList";
 import { PostList } from "./molecules/PostList";
 import { FriendshipsList } from "./molecules/FriendshipsList";
+import { ExercisesList } from "./molecules/ExercisesList";
+import { MusclesChips } from "./molecules/MusclesChips";
 
 import { Home } from "./organisms/Home";
 import { Login } from "./organisms/Login";
@@ -35,6 +39,10 @@ import { Train } from "./organisms/Train";
 import { MainLayout } from "./templates/MainLayout";
 
 export {
+  MusclesChips,
+  CustomChip,
+  ExercisesList,
+  RoutineExercisesTable,
   NotFound,
   Home,
   Login,
