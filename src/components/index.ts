@@ -1,42 +1,46 @@
-import { LoginForm } from "./forms/LoginForm";
-import { RegisterForm } from "./forms/RegisterForm";
+import { FormField } from "./atoms/FormField";
+import { FormSelect } from "./atoms/FormSelect";
+import { CustomButton } from "./atoms/CustomButton";
+import { ErrorMessage } from "./atoms/ErrorMessage";
+import { EmptySection } from "./atoms/EmptySection";
+import { UserAvatar } from "./atoms/UserAvatar";
+import { NotFound } from "./atoms/NotFound";
 
-import { FormField } from "./inputs/FormField";
-import { FormSelect } from "./inputs/FormSelect";
+import { LoginForm } from "./molecules/LoginForm";
+import { RegisterForm } from "./molecules/RegisterForm";
+import { SocialLoginButtons } from "./molecules/SocialLoginButtons";
+import { RoutinesTable } from "./molecules/RoutinesTable";
+import { ProfileForm } from "./molecules/ProfileForm";
+import { RoutineForm } from "./molecules/RoutineForm";
+import { PostForm } from "./molecules/PostForm";
+import { TrainExerciseCard } from "./molecules/TrainExerciseCard";
+import { FriendshipSuggestionCard } from "./molecules/FriendshipSuggestionCard";
+import { PostCard } from "./molecules/PostCard";
+import { ProfileCard } from "./molecules/ProfileCard";
+import { ProfileCardSecondary } from "./molecules/ProfileCardSecondary";
+import { Searchbar } from "./molecules/Searchbar";
+import { FriendshipRequestMenu } from "./molecules/FriendshipRequestMenu";
+import { CustomMenu } from "./molecules/CustomMenu";
+import { FriendshipRequestList } from "./molecules/FriendshipRequestsList";
+import { FriendshipSuggestList } from "./molecules/FriendshipSuggestList";
+import { PostList } from "./molecules/PostList";
+import { FriendshipsList } from "./molecules/FriendshipsList";
 
-import { CustomButton } from "./buttons/CustomButton";
-import { SocialLoginButtons } from "./buttons/SocialLoginButtons";
+import { Home } from "./organisms/Home";
+import { Login } from "./organisms/Login";
+import { Profile } from "./organisms/Profile";
+import { Routines } from "./organisms/Routines";
+import { Train } from "./organisms/Train";
 
-import { MainLayout } from "./layouts/MainLayout";
-
-import { ErrorMessage } from "./errors/ErrorMessage";
-import { EmptySection } from "./EmptySection/EmptySection";
-
-import { RoutinesTable } from "./tables/RoutinesTable";
-
-import { ProfileForm } from "./forms/ProfileForm";
-import { RoutineForm } from "./forms/RoutineForm";
-import { PostForm } from "./forms/PostForm";
-
-import { TrainExerciseCard } from "./cards/TrainExerciseCard";
-import { FriendshipSuggestionCard } from "./cards/FriendshipSuggestionCard";
-import { PostCard } from "./cards/PostCard";
-import { ProfileCard } from "./cards/ProfileCard";
-import { ProfileCardSecondary } from "./cards/ProfileCardSecondary";
-
-import { Searchbar } from "./searchbar/Searchbar";
-
-import { FriendshipRequestMenu } from "./menus/FriendshipRequestMenu";
-import { CustomMenu } from "./menus/CustomMenu";
-
-import { UserAvatar } from "./avatar/UserAvatar";
-
-import { FriendshipRequestList } from "./lists/FriendshipRequestsList";
-import { FriendshipSuggestList } from "./lists/FriendshipSuggestList";
-import { PostList } from "./lists/PostList";
-import { FriendshipsList } from "./lists/FriendshipsList";
+import { MainLayout } from "./templates/MainLayout";
 
 export {
+  NotFound,
+  Home,
+  Login,
+  Profile,
+  Train,
+  Routines,
   ProfileCardSecondary,
   FriendshipsList,
   ProfileCard,

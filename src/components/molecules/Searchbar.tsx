@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FormField } from "../inputs/FormField";
+import { FormField } from "../atoms/FormField";
 
 interface ComponentProps {
   placeholder?: string;

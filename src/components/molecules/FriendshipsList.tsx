@@ -1,12 +1,12 @@
 import { useFriendshipsCrud } from "@/hooks";
 import { useEffect, useMemo } from "react";
-import { ErrorMessage } from "../errors/ErrorMessage";
+import { ErrorMessage } from "../atoms/ErrorMessage";
 import { UserProfile } from "@/types";
 import { useAuthContext } from "@/context";
-import { UserAvatar } from "../avatar/UserAvatar";
+import { UserAvatar } from "../atoms/UserAvatar";
 import { FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { EmptySection } from "../EmptySection/EmptySection";
+import { EmptySection } from "../atoms/EmptySection";
 
 interface UserProfileExtended extends UserProfile {
   friendshipId: string;

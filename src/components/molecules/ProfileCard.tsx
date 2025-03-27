@@ -1,5 +1,5 @@
 import { FaPencilAlt } from "react-icons/fa";
-import { UserAvatar } from "../avatar/UserAvatar";
+import { UserAvatar } from "../atoms/UserAvatar";
 import { UserProfile } from "@/types";
 import { trainGoals } from "@/utils";
 

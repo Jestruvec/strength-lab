@@ -10,7 +10,7 @@ import {
   // FaCog,
   FaBook,
 } from "react-icons/fa";
-import { FriendshipRequestMenu } from "../menus/FriendshipRequestMenu";
+import { FriendshipRequestMenu } from "../molecules/FriendshipRequestMenu";
 
 const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   const navigate = useNavigate();

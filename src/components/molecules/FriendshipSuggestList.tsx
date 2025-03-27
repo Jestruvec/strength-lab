@@ -1,5 +1,5 @@
 import { useMemo, useEffect, useState } from "react";
-import { FriendshipSuggestionCard } from "../cards/FriendshipSuggestionCard";
+import { FriendshipSuggestionCard } from "../molecules/FriendshipSuggestionCard";
 import {
   useFriendshipRequestsCrud,
   useFriendshipsCrud,
@@ -7,7 +7,7 @@ import {
 } from "@/hooks";
 import { useAuthContext } from "@/context";
 import { FriendshipRequest } from "@/types";
-import { ErrorMessage } from "../errors/ErrorMessage";
+import { ErrorMessage } from "../atoms/ErrorMessage";
 
 export const FriendshipSuggestList = () => {
   const { user } = useAuthContext();

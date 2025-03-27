@@ -1,5 +1,5 @@
 import { UserProfile } from "@/types";
-import { UserAvatar } from "../avatar/UserAvatar";
+import { UserAvatar } from "../atoms/UserAvatar";
 import { trainGoals } from "@/utils";
 
 interface ComponentProps {

@@ -4,17 +4,16 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { AuthProvider, useAuthContext } from "@/context";
 import {
+  MainLayout,
   Home,
   Login,
   NotFound,
-  Settings,
   Train,
   Profile,
   Routines,
-} from "./pages";
-import { AuthProvider, useAuthContext } from "@/context";
-import { MainLayout } from "@/components";
+} from "@/components";
 
 export default function App() {
   return (
@@ -34,7 +33,6 @@ export default function App() {
           >
             <Route index element={<Home />} />{" "}
             <Route path="home" element={<Home />} />
-            <Route path="settings" element={<Settings />} />
             <Route path="profile" element={<Profile />} />
             <Route path="profile/:profileId" element={<Profile />} />
             <Route path="train" element={<Train />} />
