@@ -69,12 +69,12 @@ export const RoutineForm = ({
   const filteredExercises = useMemo(() => {
     return exercises.filter(
       (exercise) =>
-        exercise.name.toLocaleLowerCase().includes(searchQuery.toLowerCase())
-      // && exercise.exercise_muscles.some((e) =>
-      //   selectedMusclesIds.includes(e.muscleId)
-      // )
+        exercise.name.toLocaleLowerCase().includes(searchQuery.toLowerCase()) &&
+        exercise.exercise_muscles.some((e) =>
+          selectedMusclesIds.includes(e.muscleId)
+        )
     );
-  }, [exercises, searchQuery]);
+  }, [exercises, searchQuery, selectedMusclesIds]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -216,7 +216,7 @@ export const RoutineForm = ({
           options={trainDays}
         />
 
-        <label className="text-sm font-medium">Seleccionar ejercicios</label>
+        <h3 className="text-sm font-medium">Seleccionar ejercicios</h3>
 
         <MusclesChips
           loading={loadingMuscles}
@@ -233,7 +233,7 @@ export const RoutineForm = ({
           selectedMusclesIds={selectedMusclesIds}
         />
 
-        <label className="text-sm font-medium">Ejercicios seleccionados</label>
+        <h3 className="text-sm font-medium">Ejercicios seleccionados</h3>
 
         <div className="rounded-md border  border-gray-400 shadow-md h-40 overflow-y-auto overflow-x-hidden">
           <RoutineExercisesTable
