@@ -67,12 +67,8 @@ export const RoutineForm = ({
   }, [fetchExercises, fetchMuscles, routineToEdit]);
 
   const filteredExercises = useMemo(() => {
-    return exercises.filter(
-      (exercise) =>
-        exercise.name.toLocaleLowerCase().includes(searchQuery.toLowerCase()) &&
-        exercise.exercise_muscles.some((e) =>
-          selectedMusclesIds.includes(e.muscleId)
-        )
+    return exercises.filter((exercise) =>
+      exercise.name.toLocaleLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [exercises, searchQuery, selectedMusclesIds]);
 

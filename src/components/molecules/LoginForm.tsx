@@ -39,11 +39,11 @@ export const LoginForm = () => {
         required
       />
       {error && <ErrorMessage message={error} />}
-      <div className="flex justify-end mb-2">
+      {/* <div className="flex justify-end mb-2">
         <span className="text-xs cursor-pointer text-gray-500 hover:underline">
           Forgot password?
         </span>
-      </div>
+      </div> */}
       <button
         type="submit"
         className="p-2 text-white rounded-md bg-gray-700 cursor-pointer shadow-sm hover:opacity-90"
